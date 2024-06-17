@@ -1,0 +1,8 @@
+{
+	"isNewcomer": false,
+	"isUltrahardUnlocked": true,
+    "ALL_DIFFICULTIES": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    "NEWCOMER_GRADUATE_AT_MAP_COMPLETION_COUNT": 15,
+    "ULTRAHARD_UNLOCK_AT_OVERALL_PERCENT": 0.9,
+    "FINDER_MAX_RESULTS": 50
+}

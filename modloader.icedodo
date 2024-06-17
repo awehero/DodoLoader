@@ -1,0 +1,30 @@
+const WEBSITE_URL = "https://icedodo.onionfist.com";
+
+only lines that follow syntax will be added
+
+set the difficulties (can add more)
+const ALL_DIFFICULTIES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+compiler version
+const LATEST_MAP_CODE_VERSION = "v8";
+
+maps to unlock rest of game
+const NEWCOMER_GRADUATE_AT_MAP_COMPLETION_COUNT = 0;
+
+% done to unlock ultrahard
+const ULTRAHARD_UNLOCK_AT_OVERALL_PERCENT = 1;
+
+const FINDER_MAX_RESULTS = 50;
+const CLOSE_BUTTON_TEXT = "Close [X]";
+
+just the cup name/id (same for both) (need to add ID.png to skins to have an img)
++cup "test"
++cup "helloworld"
+
+adding maps is a bit more tricky and has to be 1 lines (make sure this is in order of cups added)
++map [{diff:1,id:"glass_walkway",name:"Glass Walkway"},{diff:1,id:"lucid_dreams",name:"Lucid Dreams"}]
++map [{ diff: 8, id: "dual", name: "Dual" }]
+
+name of skin is the same as the cup and the file must be {cup name}.png (same order as cups added)
++skin test
++skin helloworld
