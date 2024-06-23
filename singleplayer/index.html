@@ -19,7 +19,7 @@
     </div>
     <div id="preroll"></div>
     <div id="ModMenu">
-        <div id="ModMenuContent" style="opacity: 50%;position:absolute;top:0;right:5vw;width:15vw;border:rgb(59, 59, 59) 1px solid;background-color: rgb(39, 39, 39);border-radius: 0 0 5px 5px;-index:-1">
+        <div id="ModMenuContent" style="opacity: 75%;position:absolute;top:0;right:5vw;width:15vw;border:rgb(59, 59, 59) 1px solid;background-color: rgb(39, 39, 39);border-radius: 0 0 5px 5px;-index:-1">
             <button id="togglemenu" class="modbutton">ModMenu (click)</button>
             <div class="modmenuOption">
                 <input id="spin" type="checkbox">
@@ -161,6 +161,41 @@
                 camera.rotation.x += .25;
             });
             
+            $(document).keypress(function(event) {
+                // move
+                if (event.key === "j") {
+                    camera.position.x += 1;
+                }
+                if (event.key === "l") {
+                    camera.position.x -= 1;
+                }
+                if (event.key === "k") {
+                    camera.position.z += 1;
+                }
+                if (event.key === "i") {
+                    camera.position.z -= 1;
+                }
+                if (event.key === "p") {
+                    camera.position.y += 1;
+                }
+                if (event.key === ";") {
+                    camera.position.y -= 1;
+                }
+                // rotation
+                if (event.key === "J") {
+                    camera.rotation.y -= .25;
+                    alert(camera.rotation.y)
+                }
+                if (event.key === "L") {
+                    camera.rotation.y += .25;
+                }
+                if (event.key === "K") {
+                    camera.rotation.x += .25;
+                }
+                if (event.key === "I") {
+                    camera.rotation.x -= .25;
+                }
+            });
         });
     </script>
 

@@ -795,15 +795,15 @@ class FSingleInputManager extends FBaseInputManager {
     if (!this.isOnMenuOrGame())
       return;
     switch (event.code) {
-    //   case "KeyA":
+      case "KeyA":
       case "ArrowLeft":
         window.controls.left = false;
         break;
-    //   case "KeyD":
+      case "KeyD":
       case "ArrowRight":
         window.controls.right = false;
         break;
-    //   case "KeyS":
+      case "KeyS":
       case "ArrowDown":
       case "ShiftLeft":
         if (this.world.mainState.pageId !== PageIdEnum.Game)
@@ -811,7 +811,7 @@ class FSingleInputManager extends FBaseInputManager {
         event.preventDefault();
         window.controls.down = false;
         break;
-    //   case "KeyW":
+      case "KeyW":
       case "ArrowUp":
       case "Space":
         window.controls.space = false;
