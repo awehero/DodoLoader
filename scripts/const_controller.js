@@ -3,8 +3,12 @@
 const INF = 90000000000000;
 
 // defaults
+// set speed
+let speedtoggle = document.getElementById("speedoverwrite")
+let speedOverwrite = document.getElementById("speed");
+
+let default_speed;
 const default_radius = 2.5;
-const default_speed = 0.28;
 const default_steer = 0.022;
 const default_gravity = -9;
 const physics_call_rate = 2; // higher = better performance. lower = better accuracy.
@@ -31,7 +35,6 @@ var cam_horizontal = 0;
 var cam_vertical = 0;
 var cam_depression = 0;
 
-
 var cc = {
 	default: {},
 	monkey: {},
@@ -44,7 +47,20 @@ var cc = {
 		this.default["cameraRightAngle"] = () => {return default_cameraRightAngle;};
 		this.default["jumpSpeed"] = () => {return default_jumpSpeed;};
 		this.default["jumpHeight"] = () => {return default_jumpHeight;};
-		this.default["speed"] = () => {return default_speed};
+		this.default["speed"] = () => {
+            let spectatorMode = document.getElementById("spectatorMode");
+            if (speedtoggle.checked) {
+                default_speed = speedOverwrite;
+                return speedOverwrite.value;
+            }
+            // else if (spectatorMode.checked) {
+            //     default_speed=0;return 0
+            // }
+            else {
+                default_speed = 0.28;
+                return 0.28;
+            }
+        };
 		this.default["steer"] = () => {return default_steer};
 		this.default["player.scaling"] = () => {return new BABYLON.Vector3(1, 0.16, 1)};
 		this.default["scene.clearColor"] = () => {return new BABYLON.Color4(0,0,0,1)};
@@ -52,7 +68,18 @@ var cc = {
 		this.default["light.diffuse"] = () => {return new BABYLON.Color4(1, 1, 1, 1)};
 		this.default["light.specular"] = () => {return new BABYLON.Color3(1, 1, 1)};
 		this.default["light.groundColor"] = () => {return new BABYLON.Color3(0, 0, 0)};
-		this.default["gravity"] = () => {return new BABYLON.Vector3(0,-9,0)};
+		this.default["gravity"] = () => {
+            let gravitytoggle = document.getElementById("gravityoverwrite")
+            let gravityOverwrite = document.getElementById("gravity");
+            let spectatorMode = document.getElementById("spectatorMode");
+            if (gravitytoggle.checked) {
+                return new BABYLON.Vector3(0,gravityOverwrite.value,0)
+            }
+            // else if (spectatorMode.checked) {
+            //     return new BABYLON.Vector3(0,0,0)
+            // }
+            else {return new BABYLON.Vector3(0,-9,0)}
+        }
 		this.default["camera.upVector"] = () => {return new BABYLON.Vector3(0,1,0)};
 	},
 	set_monkey: function(key, val) {

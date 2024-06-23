@@ -33,6 +33,7 @@ var flyjump = {
 				this.can_jump = can_jump;
 				// amount of frames u can jump for, after exiting contact with platform.
 				// this is due to human reaction time.
+                // cayotee time here
 				this.jump_sess = 13;
 			}
 		}
@@ -41,6 +42,7 @@ var flyjump = {
 		if (this.jump_sess > 0) {
 			this.jump_sess -= 1;
 		} else {
+            // ground check
 			this.can_jump = false;
 		}
 

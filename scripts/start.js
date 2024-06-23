@@ -52,7 +52,9 @@ var start = {
 	},
 	create_scene: function() {
 		scene.clearColor = new BABYLON.Color4(0,0,0,1);
-		scene.ambientColor = new BABYLON.Color4(0,0,0,0);
+        // scene.clearColor = new BABYLON.Color4(225,225,225,1);
+		scene.ambientColor = new BABYLON.Color4(0,0,0,1);
+        // scene.ambientColor = new BABYLON.Color4(225,225,225,0);
 
 		// camera
 		camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 2, 10), scene);

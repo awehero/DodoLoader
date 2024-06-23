@@ -2,6 +2,7 @@ import os
 import subprocess
 import sys
 
+# godmode in update.js
 answer = input("Do you want to download mods?\n(if yes, clear all lines above the instructed line in assets/index.js)\n(y/n): ")
 if answer.lower() == "y":
     def eraseLastModded():
@@ -36,6 +37,7 @@ if answer.lower() == "y":
     # .icedodo compiler
     with open("./modloader.icedodo", 'r') as file:
         compiled = ""
+        compiledGame = ""
         Addcup = []
         AddMapTocupPre = []
         AddMapTocup = []
@@ -63,15 +65,19 @@ if answer.lower() == "y":
     prepend_line("./assets/index.js", "\n")
     prepend_line("./assets/index.js", compiled)
     prepend_line("./assets/index.js", "//modloader auto generated")
-# if answer.lower() == "n" or answer.lower() == "y":
-#     # run the game
-#     port = 8000
-#     try:
-#         subprocess.run(['python3', '-m', 'http.server', str(port)], check=True)
-#     except subprocess.CalledProcessError as e:
-#         print(f"Error: {e}")
-#     print("in a browser, go to: 0.0.0.0:8000, control+c to stop server")
-#     pass
 
-# if answer.lower() != "y" and answer.lower() != "n":
-#     sys.exit("Invalid input")
+    prepend_line("./assets/Vsingleplayer.js", "\n")
+    prepend_line("./Vsingleplayer/index.js", compiled)
+    prepend_line("./Vsingleplayer/index.js", "//modloader auto generated")
+if answer.lower() == "n" or answer.lower() == "y":
+    # run the game
+    port = 8000
+    try:
+        subprocess.run(['python3', '-m', 'http.server', str(port)], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
+    print("in a browser, go to: 0.0.0.0:8000, control+c to stop server")
+    pass
+
+if answer.lower() != "y" and answer.lower() != "n":
+    sys.exit("Invalid input")

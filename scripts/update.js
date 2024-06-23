@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+
 var update = {
 	loop: function() {
 		if (!isMapLoaded) return
@@ -26,13 +27,17 @@ var update = {
 			score += 1;
 			window.tsTriggers.onFrame()
 			// render call
-			this.player_move();
+            // let spectatorMode = document.getElementById("spectatorMode");
+            // if (!spectatorMode.checked) {
+                this.player_move();
+            // }
 			map.render_update();
 			map.section_update();
 			flyjump.render_loop();
 			// physics call
 			if (score % physics_call_rate == 0) {
-				this.collision_check();
+                // god mode
+                this.collision_check();
 				map.physics_update();
 				flyjump.compute_loop();
 				this.update_overlay();
@@ -41,11 +46,16 @@ var update = {
 			console.log(err);
 		}
 	},
+    // spesific god mode
 	collision_check: function() {
-		if (player.position.y < -20) {change_state.die('Fell To Death')}
-		if (player.position.y > 80) {change_state.die('Left The Orbit')}
-		this.checkConeCollision()
-		this.checkEndingCollision()
+        let godmodeCheckbox = document.getElementById("godmode");
+        let spectatorMode = document.getElementById("spectatorMode");
+        if (!godmodeCheckbox.checked || spectatorMode.checked) {
+            if (player.position.y < -20) {change_state.die('Fell To Death')}
+            if (player.position.y > 80) {change_state.die('Left The Orbit')}
+            this.checkConeCollision()
+        }
+        this.checkEndingCollision()
 	},
 	checkConeCollision() {
 		for (let i=0;i<maker.cone_count;i++) {
@@ -79,24 +89,38 @@ var update = {
 		rotation += rotationAdjustment
 		player.rotation.y = rotation;
 
-		const positionAdjustment = window.tsTriggers.getPositionAdjustment()
-		player.position.x += positionAdjustment.x;
-		player.position.z += positionAdjustment.z;
-
+        let freeze = document.getElementById("freeze");
+        if (!freeze.checked) {
+            console.log("notfrozen");
+            const positionAdjustment = window.tsTriggers.getPositionAdjustment()
+            player.position.x += positionAdjustment.x;
+            player.position.z += positionAdjustment.z;
+        }
 		// light & camera
-		let rotation_offsetted = rotation + cameraRightAngle;
-		camera.position.x = player.position.x + Math.sin(rotation_offsetted) * cam_horizontal;
-		camera.position.z = player.position.z + Math.cos(rotation_offsetted) * cam_horizontal;
-		camera.position.y = player.position.y + cam_vertical;
-		camera.rotation.y = 3.14 + rotation_offsetted;
-		camera.rotation.x = cam_depression;
+        let spectatorMode = document.getElementById("spectatorMode");
+        let follow = document.getElementById("follow");
+        if (!spectatorMode.checked) {
+            let rotation_offsetted = rotation + cameraRightAngle;
+            camera.position.x = player.position.x + Math.sin(rotation_offsetted) * cam_horizontal;
+            camera.position.z = player.position.z + Math.cos(rotation_offsetted) * cam_horizontal;
+            camera.position.y = player.position.y + cam_vertical;
+            camera.rotation.y = 3.14 + rotation_offsetted;
+            camera.rotation.x = cam_depression;
+        }
+        else if (follow.checked) {
+            camera.setTarget(player.position)
+        }
 		light.position = camera.position;
 	},
 	shouldSpin: function() {
-		if (flyjump.can_jump) return false;
-		if (speed === default_speed) return true;
-		if (speed === 0.2) return true;
-		return false
+        let spinCheckbox = document.getElementById("spin");
+        if (spinCheckbox.checked == false) {
+            if (flyjump.can_jump) return false;
+            if (speed === default_speed) return true;
+            if (speed === 0.2) return true;
+            return false
+        }
+        else {return false;}
 	},
 	are_touching: function(a, b, r) {
 		let dz = a.position.z - b.position.z;
@@ -112,10 +136,14 @@ var update = {
 		return false;
 	},
 	set_gravity: function(val) {
-		scene.gravity = new BABYLON.Vector3(0, val, 0);
-		gravity = scene.gravity;
-		scene.getPhysicsEngine().setGravity(scene.gravity);
-		player.applyGravity = true;
+        let gravitytoggle = document.getElementById("gravityoverwrite")
+        let gravityOverwrite = document.getElementById("gravity");
+		if (!gravitytoggle.checked) {
+            scene.gravity = new BABYLON.Vector3(0, val, 0);
+            gravity = scene.gravity;
+            scene.getPhysicsEngine().setGravity(scene.gravity);
+            player.applyGravity = true;
+        }
 	},
 	update_overlay: function() {
 		const isJumpEnabled = flyjump.can_jump;

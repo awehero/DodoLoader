@@ -934,8 +934,8 @@
   z-index: inherit;
   position: absolute;
   filter: invert(100%);
-  right: 98px;
-  top: 40px;
+  right: 10px;
+  bottom: 80px;
   width: 42px;
   height: 42px;
 }

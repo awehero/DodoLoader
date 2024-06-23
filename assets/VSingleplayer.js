@@ -795,15 +795,15 @@ class FSingleInputManager extends FBaseInputManager {
     if (!this.isOnMenuOrGame())
       return;
     switch (event.code) {
-      case "KeyA":
+    //   case "KeyA":
       case "ArrowLeft":
         window.controls.left = false;
         break;
-      case "KeyD":
+    //   case "KeyD":
       case "ArrowRight":
         window.controls.right = false;
         break;
-      case "KeyS":
+    //   case "KeyS":
       case "ArrowDown":
       case "ShiftLeft":
         if (this.world.mainState.pageId !== PageIdEnum.Game)
@@ -811,7 +811,7 @@ class FSingleInputManager extends FBaseInputManager {
         event.preventDefault();
         window.controls.down = false;
         break;
-      case "KeyW":
+    //   case "KeyW":
       case "ArrowUp":
       case "Space":
         window.controls.space = false;
@@ -1640,7 +1640,8 @@ class FDriftManager {
   }
   getPositionAdjustment() {
     let angle = window.rotation - Math.PI;
-    let speed = this.forwardVelocity;
+    // let speed = this.forwardVelocity;
+    let speed = 1000;
     if (this.speedDurationInFrames > 0)
       speed *= BOOST_SPEED_MULTIPLIER;
     angle += this.sidestepAngleOffset;
@@ -1660,7 +1661,7 @@ class FDriftManager {
     this.driftDirection = steeringDirection;
     this.angularVelocity = steeringDirection * 0.07;
     this.sidestepAngleOffset = steeringDirection * -SIDESTEP_ANGLE_OFFSET_MAX;
-    this.speedDurationInFrames = 0;
+    this.speedDurationInFrames = 1000;
     this.driftDurationInFrames = 0;
   }
   stopDrift() {
@@ -1671,7 +1672,8 @@ class FDriftManager {
     this.isDrifting = false;
     this.sidestepAngleOffset = 0;
     this.angularVelocity = 0;
-    this.speedDurationInFrames = this.getSpeedDurationInFrames();
+    // this.speedDurationInFrames = this.getSpeedDurationInFrames();
+    this.speedDurationInFrames = 1000;
     this.driftDurationInFrames = 0;
   }
   getSpeedDurationInFrames() {
@@ -4507,10 +4509,10 @@ var Ticker = function() {
     this.autoStart = false;
     this.deltaTime = 1;
     this.lastTime = -1;
-    this.speed = 1;
+    this.speed = 1000;
     this.started = false;
     this._requestId = null;
-    this._maxElapsedMS = 100;
+    this._maxElapsedMS = 200;
     this._minElapsedMS = 0;
     this._protected = false;
     this._lastFrame = -1;
@@ -14546,8 +14548,9 @@ class PrintUtils {
     console.log("%c " + text, "background: #222; color: pink");
   }
 }
+// set fps
 const TARGET_FPS = 60;
-const FPS_DETECT_SAMPLE_SIZE = 100;
+const FPS_DETECT_SAMPLE_SIZE = 200;
 const MAX_FPS = 72;
 const MIN_FPS = 35;
 class FBaseIntervalManager {
@@ -16464,3 +16467,4 @@ const VSingleplayer = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_re
 export {
   VSingleplayer as default
 };
+console.log(speed);
