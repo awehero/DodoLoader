@@ -1,17 +1,27 @@
-//modloader auto generated
+//modloader auto generated (old interperter)
 const WEBSITE_URL = "https://icedodo.onionfist.com";
 const ALL_DIFFICULTIES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const LATEST_MAP_CODE_VERSION = "v8";
 const NEWCOMER_GRADUATE_AT_MAP_COMPLETION_COUNT = 0;
-const ULTRAHARD_UNLOCK_AT_OVERALL_PERCENT = 1;
+const ULTRAHARD_UNLOCK_AT_OVERALL_PERCENT = .9;
 const FINDER_MAX_RESULTS = 50;
 const CLOSE_BUTTON_TEXT = "Close [X]";
 
-const Addcup = ["test", "helloworld"]
+const Addcup = JSON.parse(localStorage.getItem("CupNames"))
 
-const AddMapTocup = [[{diff:1,id:"glass_walkway",name:"Glass Walkway"},{diff:1,id:"lucid_dreams",name:"Lucid Dreams"}], [{ diff: 8, id: "dual", name: "Dual" }]]
+let AddMapTocup = JSON.parse(localStorage.getItem("CupMaps"))
+console.log(AddMapTocup);
+function convertStringToArray(input) {
+    const jsonString = `[${input}]`;
+    const resultArray = JSON.parse(jsonString);
+    return resultArray;
+}
+const inputString = AddMapTocup;
+const formattedInputString = inputString.toString().replace(/(\w+):/g, '"$1":');
+AddMapTocup = convertStringToArray(formattedInputString);
+console.log(AddMapTocup);
 
-const Addskin = ['test', 'helloworld']
+const Addskin = JSON.parse(localStorage.getItem("CupImages"))
 
 
 
@@ -7007,7 +7017,8 @@ class CupUtils {
   static getCupSkinUrl(cupId) {
     if (cupId >= 36) {
         // console.log("/assets/skins/"+Addskin[cupId-36]+".png")
-        return "/assets/skins/"+Addskin[cupId-36]+".png";
+        // return "/assets/skins/"+Addskin[cupId-36]+".png";
+        return JSON.parse(localStorage.getItem("CupImages"))[cupId-36];
     }
     else {
         // console.log(`/assets/skins/${CupIdEnum[cupId].toLowerCase()}.png`);

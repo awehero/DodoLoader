@@ -48,14 +48,14 @@ var cc = {
 		this.default["jumpSpeed"] = () => {return default_jumpSpeed;};
 		this.default["jumpHeight"] = () => {return default_jumpHeight;};
 		this.default["speed"] = () => {
-            let spectatorMode = document.getElementById("spectatorMode");
+            let freeze = document.getElementById("freeze");
             if (speedtoggle.checked) {
                 default_speed = speedOverwrite;
                 return speedOverwrite.value;
             }
-            // else if (spectatorMode.checked) {
-            //     default_speed=0;return 0
-            // }
+            else if (freeze.checked) {
+                default_speed=0;return 0
+            }
             else {
                 default_speed = 0.28;
                 return 0.28;
@@ -71,13 +71,13 @@ var cc = {
 		this.default["gravity"] = () => {
             let gravitytoggle = document.getElementById("gravityoverwrite")
             let gravityOverwrite = document.getElementById("gravity");
-            let spectatorMode = document.getElementById("spectatorMode");
+            let freeze = document.getElementById("freeze");
             if (gravitytoggle.checked) {
                 return new BABYLON.Vector3(0,gravityOverwrite.value,0)
             }
-            // else if (spectatorMode.checked) {
-            //     return new BABYLON.Vector3(0,0,0)
-            // }
+            else if (freeze.checked) {
+                return new BABYLON.Vector3(0,0,0)
+            }
             else {return new BABYLON.Vector3(0,-9,0)}
         }
 		this.default["camera.upVector"] = () => {return new BABYLON.Vector3(0,1,0)};

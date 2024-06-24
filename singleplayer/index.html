@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="/assets/index.css">
   </head>
   <body>
-
     <div id="appContainer">
       <div id="app"></div>
     </div>
@@ -22,6 +21,8 @@
         <div id="ModMenuContent" style="opacity: 75%;position:absolute;top:0;right:5vw;width:15vw;border:rgb(59, 59, 59) 1px solid;background-color: rgb(39, 39, 39);border-radius: 0 0 5px 5px;-index:-1">
             <button id="togglemenu" class="modbutton">ModMenu (click)</button>
             <div class="modmenuOption">
+                <botton onclick="window.location.href='../'">Back To Config</botton>
+                <br>
                 <input id="spin" type="checkbox">
                 <label>Turn Off Spin</label>
                 <br>
@@ -54,15 +55,15 @@
                     <input id="spectatorMode" type="checkbox">
                     <label>Spectator Mode</label>
                     <br>
-                    <input id="freeCam" type="checkbox">
-                    <label>Free Cam</label>
-                    <br>
-                    <input id="freeze" type="checkbox">
-                    <label>Freeze Dodo</label>
-                    <br>
-                    <input id="follow" type="checkbox">
-                    <label>Follow Player</label>
-                    <br>
+                    <input id="freeCam" type="checkbox" >
+                    <label >Free Cam</label>
+                    <br >
+                    <input id="freeze" type="checkbox" >
+                    <label >Freeze Dodo</label>
+                    <br >
+                    <input id="follow" type="checkbox" >
+                    <label >Follow Player</label>
+                    <br >
                     <p style="margin: 0;">Dodo</p>
                     <div class="container">
                         <div class="home"><button id="home" class="dodocontrolButton">Home</button></div>
@@ -184,7 +185,6 @@
                 // rotation
                 if (event.key === "J") {
                     camera.rotation.y -= .25;
-                    alert(camera.rotation.y)
                 }
                 if (event.key === "L") {
                     camera.rotation.y += .25;

@@ -3,33 +3,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Ice Dodo - Official Site</title>
-    <link rel="icon" href="images/icon.png">
-    <meta name="description" content="Play hundreds of 3D Ice dodo levels. Do not fall off or touch spikes.">
-    
-    <script type="module" crossorigin="" src="assets/index.js"></script>
-    <link rel="stylesheet" href="assets/index.css">
+    <link rel="icon" href="images/dodoloader.webp">
+    <meta name="description" content="Modded Ice Dodo by Onionfist.com">
   </head>
-  <body>
-    
-    
-    
-    <div id="appContainer">
-      <div id="app"></div>
+  <body style="font-family: ubuntu;">
+    <center>    
+    <div>
+        <h1>DodoLoader</h1>
+        <p>Original Ice Dodo by Onionfist.com</p>
+        <p>Dodoloader by Guy</p>
+        <button onclick="window.location.href='singleplayer'">Play Now</button>
+        <form id="Cupadder">
+            <h3>Add Cup</h3>
+            <input type="text" id="name">
+            <label for="name">Name of cup</label>
+            <br>
+            <input style="width:40%" type="text" id="maps">
+            <label for="maps">Maps for cup<br>make sure you type it like this example:<br>[{diff:1,id:"glass_walkway",name:"Glass Walkway"},{diff:1,id:"lucid_dreams",name:"Lucid Dreams"}]<br>the diff is the difficulty that map will show as</label>
+            <br>
+            <p>RENAME CUP IMAGE TO THE NAME OF THE CUP</p>
+            <input type="file" accept="image/png" id="image">
+            <label for="image">Image for cup (PNG only)</label>
+        </form>
+        <button onclick="SaveConfig()">Add Cup</button>
+        <button onclick="localStorage.clear();window.location.reload()">Clear Custom Cups</button>
+        <br>
+        <p>Custom Cups Added</p>
     </div>
-    <div id="preroll"></div>
-    <div class="ad-box" style="position:fixed;top:0;left:0;width:1px;" aria-hidden="true">�&nbsp;</div> <!-- This is a bait for detecting ad-blockers -->
+    <script type="text/javascript">
+        if (localStorage.getItem("CupNames") == null){
+            localStorage.setItem("CupNames",JSON.stringify([]))
+        }
+        if (localStorage.getItem("CupMaps") == null){
+            localStorage.setItem("CupMaps",JSON.stringify([]))
+        }
+        if (localStorage.getItem("CupImages") == null){
+            localStorage.setItem("CupImages",JSON.stringify([]))
+        }
+        function LocalList(name) {return JSON.parse(localStorage.getItem(name))}
+        function SaveConfig(){
+            var name = document.getElementById("name").value;
+            var maps = document.getElementById("maps").value;
+            var image = document.getElementById("image").files[0];
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="scripts/babylon.js"></script>
-    <script type="text/javascript" src="scripts/fov.js"></script>
-    <script type="text/javascript" src="scripts/change_state.js"></script>
-    <script type="text/javascript" src="scripts/decorations.js"></script>
-    <script type="text/javascript" src="scripts/maker.js"></script>
-    <script type="text/javascript" src="scripts/alias.js"></script>
-    <script type="text/javascript" src="scripts/const_controller.js"></script>
-    <script type="text/javascript" src="scripts/cleanup.js"></script>
-    <script type="text/javascript" src="scripts/start.js"></script>
-    <script type="text/javascript" src="scripts/update.js"></script>
-    <script type="text/javascript" src="scripts/flyjump.js"></script>
-    <script type="text/javascript" src="scripts/boot.js"></script>
-</body></html>
+            var cupNames = LocalList("CupNames");
+            cupNames.push(name);
+            localStorage.setItem("CupNames", JSON.stringify(cupNames));
+
+            var cupMaps = LocalList("CupMaps");
+            cupMaps.push(maps.replace(/\s/g, ""));
+            localStorage.setItem("CupMaps", JSON.stringify(cupMaps));
+
+            var reader = new FileReader();
+            reader.onload = function(){
+                var base64 = reader.result;
+                var cupImages = LocalList("CupImages");
+                cupImages.push(base64);
+                localStorage.setItem("CupImages", JSON.stringify(cupImages));
+            };
+            reader.readAsDataURL(image);
+            window.location.reload();
+        }
+        function GetCustomCups(){
+            for (let i = 0; i < LocalList("CupNames").length; i++){ {
+                document.body.innerHTML += "<div style='padding:5px;border: 2px solid #1e1e1e;border-radius: 5px;width:10vw;height:10vw; background-image: url("+LocalList("CupImages")[i]+");background-size: cover;'><p style='padding:2px;background-color: white;border-radius: 5px;position:relative;top:20%;width:50%;'>"+LocalList("CupNames")[i]+"</p></div>";
+            }}
+        }
+        GetCustomCups();
+    </script>
+    
+</center></body></html>

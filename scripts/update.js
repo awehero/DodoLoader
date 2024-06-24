@@ -49,8 +49,8 @@ var update = {
     // spesific god mode
 	collision_check: function() {
         let godmodeCheckbox = document.getElementById("godmode");
-        let spectatorMode = document.getElementById("spectatorMode");
-        if (!godmodeCheckbox.checked || spectatorMode.checked) {
+        let freeze = document.getElementById("freeze");
+        if (!godmodeCheckbox.checked || freeze.checked) {
             if (player.position.y < -20) {change_state.die('Fell To Death')}
             if (player.position.y > 80) {change_state.die('Left The Orbit')}
             this.checkConeCollision()
@@ -91,7 +91,6 @@ var update = {
 
         let freeze = document.getElementById("freeze");
         if (!freeze.checked) {
-            console.log("notfrozen");
             const positionAdjustment = window.tsTriggers.getPositionAdjustment()
             player.position.x += positionAdjustment.x;
             player.position.z += positionAdjustment.z;
