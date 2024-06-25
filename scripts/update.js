@@ -27,10 +27,7 @@ var update = {
 			score += 1;
 			window.tsTriggers.onFrame()
 			// render call
-            // let spectatorMode = document.getElementById("spectatorMode");
-            // if (!spectatorMode.checked) {
-                this.player_move();
-            // }
+            this.player_move();
 			map.render_update();
 			map.section_update();
 			flyjump.render_loop();
@@ -50,7 +47,7 @@ var update = {
 	collision_check: function() {
         let godmodeCheckbox = document.getElementById("godmode");
         let freeze = document.getElementById("freeze");
-        if (!godmodeCheckbox.checked || freeze.checked) {
+        if (!godmodeCheckbox.checked || !freeze.checked) {
             if (player.position.y < -20) {change_state.die('Fell To Death')}
             if (player.position.y > 80) {change_state.die('Left The Orbit')}
             this.checkConeCollision()
@@ -96,9 +93,9 @@ var update = {
             player.position.z += positionAdjustment.z;
         }
 		// light & camera
-        let spectatorMode = document.getElementById("spectatorMode");
+        let freecam = document.getElementById("freecam");
         let follow = document.getElementById("follow");
-        if (!spectatorMode.checked) {
+        if (!freecam.checked) {
             let rotation_offsetted = rotation + cameraRightAngle;
             camera.position.x = player.position.x + Math.sin(rotation_offsetted) * cam_horizontal;
             camera.position.z = player.position.z + Math.cos(rotation_offsetted) * cam_horizontal;
@@ -136,7 +133,6 @@ var update = {
 	},
 	set_gravity: function(val) {
         let gravitytoggle = document.getElementById("gravityoverwrite")
-        let gravityOverwrite = document.getElementById("gravity");
 		if (!gravitytoggle.checked) {
             scene.gravity = new BABYLON.Vector3(0, val, 0);
             gravity = scene.gravity;

@@ -5,25 +5,81 @@
     <title>Ice Dodo - Official Site</title>
     <link rel="icon" href="images/dodoloader.webp">
     <meta name="description" content="Modded Ice Dodo by Onionfist.com">
+    <style type="text/css" media="screen">
+        @font-face {
+            font-family: "pixeled";
+            src: url('./assets/fonts/pixeled.ttf');
+        }
+        * {
+            box-sizing: border-box;
+            font-family: "pixeled";
+            /* font-size: small; */
+            color:#bbbbbb;
+        }
+        html {
+            background-color: black;
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            height: 100%;
+        }
+        #Menu {
+            display:inline-block;
+            overflow-y: auto;
+            width: 50vw;
+            margin-top: 35px;
+            height: calc(100vh - 15px);
+            background-color: #151515;
+            box-shadow: 0px 30px 40px gray;
+            /* margin: 15px; */
+            border: 5px solid #bbbbbb;
+            border-radius: 10px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            overflow-x: hidden;
+        }
+        button {
+            margin-bottom:10px;
+            border: 4px solid #bbbbbb;
+            border-radius: 10px;
+            background-color: transparent;
+            color:white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #8A0468;
+        }
+        input {
+            color: black;
+            background-color: white;
+        }
+        p {
+            margin: 5px;
+        }
+    </style>
   </head>
-  <body style="font-family: ubuntu;">
+  <body>
     <center>    
-    <div>
-        <h1>DodoLoader</h1>
-        <p>Original Ice Dodo by Onionfist.com</p>
-        <p>Dodoloader by Guy</p>
-        <button onclick="window.location.href='singleplayer'">Play Now</button>
+    <div id="Menu">
+        <div style="position:sticky;top:0;background-color: #151515;">
+            <h1 style="margin-top:15px;">DodoLoader</h1>
+            <p>Original Ice Dodo by <a href="https://onionfist.com">Onionfist/Jason</a></p>
+            <p style="font-size:xx-small">-</p>
+            <p>Dodoloader by Guy</p>
+            <button style="width:45%;" onclick="window.location.href='singleplayer'">Play Now</button>
+            <p style="font-size:xx-small;padding-bottom: 10px;">if game does not load you messed up the cups, clear them</p>
+        </div>
         <form id="Cupadder">
             <h3>Add Cup</h3>
             <input type="text" id="name">
-            <label for="name">Name of cup</label>
+            <p style="font-size: small;">Name of cup</p>
             <br>
-            <input style="width:40%" type="text" id="maps">
-            <label for="maps">Maps for cup<br>make sure you type it like this example:<br>[{diff:1,id:"glass_walkway",name:"Glass Walkway"},{diff:1,id:"lucid_dreams",name:"Lucid Dreams"}]<br>the diff is the difficulty that map will show as</label>
+            <input style="width:90%;margin-left:5%;margin-right:5%;" type="text" id="maps">
+            <p style="font-size: small;">Maps for cup<br>make sure you type it like this example:<br>[{diff:1,id:"glass_walkway",name:"Glass Walkway"},{diff:1,id:"lucid_dreams",name:"Lucid Dreams"}]<br>the diff is the difficulty that map will show as</p>
             <br>
-            <p>RENAME CUP IMAGE TO THE NAME OF THE CUP</p>
             <input type="file" accept="image/png" id="image">
-            <label for="image">Image for cup (PNG only)</label>
+            <p style="font-size: small;">Image for cup (PNG only)</p>
         </form>
         <button onclick="SaveConfig()">Add Cup</button>
         <button onclick="localStorage.clear();window.location.reload()">Clear Custom Cups</button>
@@ -64,12 +120,14 @@
             reader.readAsDataURL(image);
             window.location.reload();
         }
+        const menu = document.getElementById("Menu");
         function GetCustomCups(){
             for (let i = 0; i < LocalList("CupNames").length; i++){ {
-                document.body.innerHTML += "<div style='padding:5px;border: 2px solid #1e1e1e;border-radius: 5px;width:10vw;height:10vw; background-image: url("+LocalList("CupImages")[i]+");background-size: cover;'><p style='padding:2px;background-color: white;border-radius: 5px;position:relative;top:20%;width:50%;'>"+LocalList("CupNames")[i]+"</p></div>";
+                menu.innerHTML += "<div style='padding:5px;border: 2px solid #1e1e1e;border-radius: 5px;width:10vw;height:10vw; background-image: url("+LocalList("CupImages")[i]+");background-size: cover;'><p style='padding:2px;border:2px solid #bbbbbb;background: #8A0468;border-radius: 5px;position:relative;top:20%;width-min:50%;font-size:70%;width:fit-content;overflow-wrap: break-word;'>"+LocalList("CupNames")[i]+"</p></div>";
             }}
         }
         GetCustomCups();
     </script>
     
 </center></body></html>
+

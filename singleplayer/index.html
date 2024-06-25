@@ -48,23 +48,20 @@
                         <input type="range" min="0" max="1" id="speed" step=".02">
                         <p style="display:block;margin:0;" id="speedindicator">0.28</p>
                     </div>
-                    <botton onclick="window.tsTriggers.onWin()">Instant Win</botton>
+                    <botton style="border:rgb(59, 59, 59) 2px solid;background-color: #bbbb;border-radius: 5px;color:#ffff;cursor:pointer" onclick="window.tsTriggers.onWin()">Instant Win</botton>
                 </div>
-                <button id="toggledodocontrols" class="modbutton">Dodo Controls</button>
+                <button id="toggledodocontrols" class="modbutton">Dodo Cinema</button>
                 <div id="dodocontrols">
-                    <input id="spectatorMode" type="checkbox">
-                    <label>Spectator Mode</label>
+                    <input id="freecam" type="checkbox">
+                    <label>FreeCam</label>
                     <br>
-                    <input id="freeCam" type="checkbox" >
-                    <label >Free Cam</label>
-                    <br >
                     <input id="freeze" type="checkbox" >
                     <label >Freeze Dodo</label>
                     <br >
                     <input id="follow" type="checkbox" >
                     <label >Follow Player</label>
                     <br >
-                    <p style="margin: 0;">Dodo</p>
+                    <p style="margin: 0;">Movement</p>
                     <div class="container">
                         <div class="home"><button id="home" class="dodocontrolButton">Home</button></div>
                         <div class="up"><button id="up" class="dodocontrolButton">Up</button></div>
@@ -127,22 +124,22 @@
                 camera.position = new BABYLON.Vector3(0,0,0);
             });
             $("#up").click(function () {
-                camera.position.y = Math.round(camera.position.y)+1;
+                camera.position.y += 1;
             });
             $("#left").click(function () {
-                camera.position.x = Math.round(camera.position.x)+1;
+                camera.position.x += 1;
             });
             $("#right").click(function () {
-                camera.position.x = Math.round(camera.position.x)-1;
+                camera.position.x -= 1;
             });
             $("#down").click(function () {
-                camera.position.y = Math.round(camera.position.y)-1;
+                camera.position.y -= 1;
             });
             $("#foreward").click(function () {
-                camera.position.z = Math.round(camera.position.z)-1;
+                camera.position.z -= 1;
             });
             $("#backward").click(function () {
-                camera.position.z = Math.round(camera.position.z)+1;
+                camera.position.z += 1;
             });
 
             // rotation
