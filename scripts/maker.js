@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-const KILLER_BOUNCE = 0
+const KILLER_BOUNCE = 99999999
 
 var maker = {
     platform_count: 0,

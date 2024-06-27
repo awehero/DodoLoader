@@ -195,19 +195,6 @@ class ProgressUtils {
     return diffProgressDictionary;
   }
 }
-function getFileFromBase64(string64) {
-    const trimmedString = string64.replace('dataimage/pngbase64', '');
-    const imageContent = atob(trimmedString);
-    const buffer = new ArrayBuffer(imageContent.length);
-    const view = new Uint8Array(buffer);
-  
-    for (let n = 0; n < imageContent.length; n++) {
-      view[n] = imageContent.charCodeAt(n);
-    }
-    const type = 'image/jpeg';
-    const blob = new Blob([buffer], { type });
-    return new File([blob], tempCustomSkin, { lastModified: new Date().getTime(), type });
-  }
 class SkinUtils {
   static getSkinIdsSorted(skinStateDictionary) {
     return ALL_SKIN_IDS.sort((a2, b2) => {
@@ -1666,8 +1653,8 @@ class FDriftManager {
   }
   getPositionAdjustment() {
     let angle = window.rotation - Math.PI;
-    // let speed = this.forwardVelocity;
-    let speed = 1000;
+    let speed = this.forwardVelocity;
+    // let speed = 1000;
     if (this.speedDurationInFrames > 0)
       speed *= BOOST_SPEED_MULTIPLIER;
     angle += this.sidestepAngleOffset;
@@ -1698,8 +1685,7 @@ class FDriftManager {
     this.isDrifting = false;
     this.sidestepAngleOffset = 0;
     this.angularVelocity = 0;
-    // this.speedDurationInFrames = this.getSpeedDurationInFrames();
-    this.speedDurationInFrames = 1000;
+    this.speedDurationInFrames = this.getSpeedDurationInFrames();
     this.driftDurationInFrames = 0;
   }
   getSpeedDurationInFrames() {
@@ -4535,10 +4521,10 @@ var Ticker = function() {
     this.autoStart = false;
     this.deltaTime = 1;
     this.lastTime = -1;
-    this.speed = 1000;
+    this.speed = 1;
     this.started = false;
     this._requestId = null;
-    this._maxElapsedMS = 200;
+    this._maxElapsedMS = 100;
     this._minElapsedMS = 0;
     this._protected = false;
     this._lastFrame = -1;
@@ -14576,7 +14562,7 @@ class PrintUtils {
 }
 // set fps
 const TARGET_FPS = 60;
-const FPS_DETECT_SAMPLE_SIZE = 200;
+const FPS_DETECT_SAMPLE_SIZE = 100;
 const MAX_FPS = 72;
 const MIN_FPS = 35;
 class FBaseIntervalManager {
