@@ -1,6 +1,3 @@
-// modloader
-let moddeditems;
-
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => {
@@ -198,6 +195,19 @@ class ProgressUtils {
     return diffProgressDictionary;
   }
 }
+function getFileFromBase64(string64) {
+    const trimmedString = string64.replace('dataimage/pngbase64', '');
+    const imageContent = atob(trimmedString);
+    const buffer = new ArrayBuffer(imageContent.length);
+    const view = new Uint8Array(buffer);
+  
+    for (let n = 0; n < imageContent.length; n++) {
+      view[n] = imageContent.charCodeAt(n);
+    }
+    const type = 'image/jpeg';
+    const blob = new Blob([buffer], { type });
+    return new File([blob], tempCustomSkin, { lastModified: new Date().getTime(), type });
+  }
 class SkinUtils {
   static getSkinIdsSorted(skinStateDictionary) {
     return ALL_SKIN_IDS.sort((a2, b2) => {
@@ -222,7 +232,15 @@ class SkinUtils {
     if (skinId == null)
       return SkinUtils.getSkinImageSrc(SkinIdEnum.Default);
     const skinName = SkinIdEnum[skinId].toLowerCase();
-    return `/assets/skins/${skinName}.png`;
+    if (skinId > 57) {
+        // console.log("skinIdthing " + (skinId-58).toString())
+        // console.log(JSON.parse(localStorage.getItem("CupImages")));
+        // console.log(JSON.parse(localStorage.getItem("CupImages"))[skinId-58])
+        // let base64img = JSON.parse(localStorage.getItem("CupImages")[skinId-58])
+        // return getFileFromBase64(base64img)
+        return JSON.parse(localStorage.getItem("CupImages"))[skinId-58]
+    }
+    else {return `/assets/skins/${skinName}.png`;}
   }
   static getPercent(progress) {
     return progress.completedMaps / progress.totalMaps;
@@ -258,6 +276,14 @@ class SkinUtils {
     }
   }
   static async getRawSkinState(skinId, mainProgressState) {
+    if (skinId > 57) {
+        return {
+            name: "Default",
+            percent: 1,
+            howToGet: "Open your eyes"
+          };
+    }
+    else {
     switch (skinId) {
       case SkinIdEnum.Default:
         return {
@@ -614,7 +640,7 @@ class SkinUtils {
           percent: await SkinUtils.getPuzzlePercent(skinId),
           howToGet: "Custom skin added by mods"
         };
-    }
+    }}
   }
 }
 class MainStateUtils {
@@ -16467,4 +16493,3 @@ const VSingleplayer = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_re
 export {
   VSingleplayer as default
 };
-console.log(speed);

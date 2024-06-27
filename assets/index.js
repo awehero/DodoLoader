@@ -10,7 +10,6 @@ const CLOSE_BUTTON_TEXT = "Close [X]";
 const Addcup = JSON.parse(localStorage.getItem("CupNames"))
 
 let AddMapTocup = JSON.parse(localStorage.getItem("CupMaps"))
-console.log(AddMapTocup);
 function convertStringToArray(input) {
     const jsonString = `[${input}]`;
     const resultArray = JSON.parse(jsonString);
@@ -19,7 +18,6 @@ function convertStringToArray(input) {
 const inputString = AddMapTocup;
 const formattedInputString = inputString.toString().replace(/(\w+):/g, '"$1":');
 AddMapTocup = convertStringToArray(formattedInputString);
-console.log(AddMapTocup);
 
 const Addskin = JSON.parse(localStorage.getItem("CupImages"))
 
@@ -6975,14 +6973,14 @@ var SkinIdEnum = /* @__PURE__ */ ((SkinIdEnum2) => {
   SkinIdEnum2[SkinIdEnum2["PercentE"] = 56] = "PercentE";
   SkinIdEnum2[SkinIdEnum2["PuzzleA"] = 57] = "PuzzleA";
 //   programatically add in cup to ID
-    // if (Addskin != null) {
-    //     for (let i of Addskin) {
-    //         // console.log("SkinIdEnum2[SkinIdEnum2["+i+"] = Skiniteration] = "+i);
-    //         SkinIdEnum2[SkinIdEnum2[i] = Skiniteration] = i;
-    //         customCupnum.push(Skiniteration)
-    //         Skiniteration++;
-    //     }
-    // }
+    if (Addskin != null) {
+        for (let i of Addskin) {
+            // console.log("SkinIdEnum2[SkinIdEnum2["+i+"] = Skiniteration] = "+i);
+            SkinIdEnum2[SkinIdEnum2[i] = Skiniteration] = i;
+            customCupnum.push(Skiniteration)
+            Skiniteration++;
+        }
+    }
   return SkinIdEnum2;
 })(SkinIdEnum || {});
 const ALL_SKIN_IDS = MiscUtils.getNumberEnumKeys(SkinIdEnum);

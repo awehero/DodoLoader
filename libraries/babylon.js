@@ -16037,7 +16037,10 @@ var BABYLON;
             }, t.CleanUrl = function(e) {
                 return e = e.replace(/#/gm, "%23")
             }, t.LoadImage = function(i, r, n, o) {
-                i instanceof ArrayBuffer && (i = t.EncodeArrayBufferTobase64(i)), i = t.CleanUrl(i);
+                console.log(i)
+                if (i.substring(0,4) == "asse") {
+                    i instanceof ArrayBuffer && (i = t.EncodeArrayBufferTobase64(i)), i = t.CleanUrl(i);
+                }
                 var s = new Image;
                 "data:" !== i.substr(0, 5) && t.SetCorsBehavior(i, s), s.onload = function() {
                     r(s)
@@ -17447,10 +17450,12 @@ var BABYLON;
         }, s.prototype.createTexture = function(t, i, r, n, s, a, h, c) {
             var l = this;
             void 0 === s && (s = e.Texture.TRILINEAR_SAMPLINGMODE), void 0 === a && (a = null), void 0 === h && (h = null), void 0 === c && (c = null);
+            // console.log(t)
+            // console.log(t.substring(0,4) == "asse")
             var u, d = this._gl.createTexture(),
                 f = t.constructor === Array ? t[0] : t,
                 p = !1;
-            if ("data:" === f.substr(0, 5) && (p = !0), p) {
+            if ("data:" == f.substr(0, 5) && (p = !0), p) {
                 var m = f;
                 p = m.split(":"), f = m, u = p[1].substr(p[1].length - 4, 4).toLowerCase()
             } else u = f.substr(f.length - 4, 4).toLowerCase();
@@ -17493,7 +17498,12 @@ var BABYLON;
                         n || (l._prepareWorkingCanvas(), l._workingCanvas.width = i, l._workingCanvas.height = r, s === e.Texture.NEAREST_SAMPLINGMODE && (l._workingContext.imageSmoothingEnabled = !1, l._workingContext.mozImageSmoothingEnabled = !1, l._workingContext.oImageSmoothingEnabled = !1, l._workingContext.webkitImageSmoothingEnabled = !1, l._workingContext.msImageSmoothingEnabled = !1), l._workingContext.drawImage(t, 0, 0, t.width, t.height, 0, 0, i, r), s === e.Texture.NEAREST_SAMPLINGMODE && (l._workingContext.imageSmoothingEnabled = !0, l._workingContext.mozImageSmoothingEnabled = !0, l._workingContext.oImageSmoothingEnabled = !0, l._workingContext.webkitImageSmoothingEnabled = !0, l._workingContext.msImageSmoothingEnabled = !0)), l._gl.texImage2D(l._gl.TEXTURE_2D, 0, l._gl.RGBA, l._gl.RGBA, l._gl.UNSIGNED_BYTE, n ? t : l._workingCanvas)
                     }), s)
                 };
-                p instanceof Array ? e.Tools.LoadImage(c, b, y, n.database) : e.Tools.LoadImage(f, b, y, n.database)
+                if (t.substring(0,4) == "asse") {
+                    p instanceof Array ? e.Tools.LoadImage(c, b, y, n.database) : e.Tools.LoadImage(f, b, y, n.database)
+                }
+                else {
+                    p instanceof Array ? e.Tools.LoadImage(t, b, y, n.database) : e.Tools.LoadImage(t, b, y, n.database)
+                }
             }
             return d
         }, s.prototype._getInternalFormat = function(e) {
