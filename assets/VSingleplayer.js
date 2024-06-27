@@ -220,11 +220,6 @@ class SkinUtils {
       return SkinUtils.getSkinImageSrc(SkinIdEnum.Default);
     const skinName = SkinIdEnum[skinId].toLowerCase();
     if (skinId > 57) {
-        // console.log("skinIdthing " + (skinId-58).toString())
-        // console.log(JSON.parse(localStorage.getItem("CupImages")));
-        // console.log(JSON.parse(localStorage.getItem("CupImages"))[skinId-58])
-        // let base64img = JSON.parse(localStorage.getItem("CupImages")[skinId-58])
-        // return getFileFromBase64(base64img)
         return JSON.parse(localStorage.getItem("CupImages"))[skinId-58]
     }
     else {return `/assets/skins/${skinName}.png`;}
@@ -1884,7 +1879,6 @@ class FMapLoader {
   }
   static loadScript(scriptUrl) {
     return new Promise((resolve2) => {
-      console.log("scriptUrl", scriptUrl);
       const head = document.getElementsByTagName("head")[0];
       const script = document.createElement("script");
       script.type = "text/javascript";

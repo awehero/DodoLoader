@@ -84,6 +84,13 @@
         <button onclick="SaveConfig()">Add Cup</button>
         <button onclick="localStorage.clear();window.location.reload()">Clear Custom Cups</button>
         <br>
+        <p>Export/Import</p>
+        <input id="cupExport" type="number">
+        <p style="font-size: small;">Number of cup you made</p>
+        <button id="export" style="margin-right:5px" onclick="exportCup()">Export</button>
+        <button id="import" onclick="importCup()">Import</button>
+        <br>
+        <textarea style="color:black;font-size: xx-small;font-family: arial;" id="exportimport"></textarea>
         <p>Custom Cups Added</p>
     </div>
     <script type="text/javascript">
@@ -127,6 +134,37 @@
             }}
         }
         GetCustomCups();
+        function exportCup() {
+            let cupNum = document.getElementById("cupExport").value;
+            let ExportName = JSON.parse(localStorage.getItem("CupNames"))[cupNum];
+            let ExportMaps = JSON.parse(localStorage.getItem("CupMaps"))[cupNum];
+            let ExportImage = JSON.parse(localStorage.getItem("CupImages"))[cupNum];
+            console.log(document.getElementById('exportimport').value = "['"+ExportName+"'"+","+ExportMaps+","+"'"+ExportImage+"']");
+            let Export = [ExportName, ExportMaps, ExportImage]; 
+            document.getElementById('exportimport').value = JSON.stringify([Export]);
+        }
+        function importCup() {
+            let Import = JSON.parse(document.getElementById('exportimport').value);
+            console.log(Import);
+            let ImportName = Import[0][0];
+            let ImportMaps = Import[0][1];
+            let ImportImage = Import[0][2];
+            console.log(ImportName, ImportMaps, ImportImage);
+            
+            let cupNames = LocalList("CupNames");
+            cupNames.push(ImportName);
+            localStorage.setItem("CupNames", JSON.stringify(cupNames));
+
+            let cupMaps = LocalList("CupMaps");
+            cupMaps.push(ImportMaps);
+            localStorage.setItem("CupMaps", JSON.stringify(cupMaps));
+
+            let cupImages = LocalList("CupImages");
+            cupImages.push(ImportImage);
+            localStorage.setItem("CupImages", JSON.stringify(cupImages));
+
+            window.location.reload();
+        }
     </script>
     
 </center></body></html>

@@ -16037,7 +16037,6 @@ var BABYLON;
             }, t.CleanUrl = function(e) {
                 return e = e.replace(/#/gm, "%23")
             }, t.LoadImage = function(i, r, n, o) {
-                console.log(i)
                 if (i.substring(0,4) == "asse") {
                     i instanceof ArrayBuffer && (i = t.EncodeArrayBufferTobase64(i)), i = t.CleanUrl(i);
                 }

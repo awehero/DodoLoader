@@ -6975,7 +6975,6 @@ var SkinIdEnum = /* @__PURE__ */ ((SkinIdEnum2) => {
 //   programatically add in cup to ID
     if (Addskin != null) {
         for (let i of Addskin) {
-            // console.log("SkinIdEnum2[SkinIdEnum2["+i+"] = Skiniteration] = "+i);
             SkinIdEnum2[SkinIdEnum2[i] = Skiniteration] = i;
             customCupnum.push(Skiniteration)
             Skiniteration++;
@@ -7014,12 +7013,10 @@ class CupUtils {
   }
   static getCupSkinUrl(cupId) {
     if (cupId >= 36) {
-        // console.log("/assets/skins/"+Addskin[cupId-36]+".png")
         // return "/assets/skins/"+Addskin[cupId-36]+".png";
         return JSON.parse(localStorage.getItem("CupImages"))[cupId-36];
     }
     else {
-        // console.log(`/assets/skins/${CupIdEnum[cupId].toLowerCase()}.png`);
         return `/assets/skins/${CupIdEnum[cupId].toLowerCase()}.png`;
     }
   }
