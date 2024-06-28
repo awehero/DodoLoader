@@ -2,7 +2,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Ice Dodo - Official Site</title>
+    <title>Ice Dodo - UnOfficial Site</title>
     <link rel="icon" href="images/dodoloader.webp">
     <meta name="description" content="Modded Ice Dodo by Onionfist.com">
     <style type="text/css" media="screen">
@@ -57,41 +57,66 @@
         p {
             margin: 5px;
         }
+        .arrow {
+            scale:300%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .arrow:hover {
+            scale: 325%;
+        }
+        .arrow:active {
+            scale: 275%;
+        }
     </style>
   </head>
   <body>
     <center>    
     <div id="Menu">
-        <div style="position:sticky;top:0;background-color: #151515;">
-            <h1 style="margin-top:15px;">DodoLoader</h1>
-            <p>Original Ice Dodo by <a href="https://onionfist.com">Onionfist/Jason</a></p>
-            <p style="font-size:xx-small">-</p>
-            <p>Dodoloader by Guy</p>
+        <div style="background-color: #151515;border-bottom: 2px inset #202020;">
+            <h1 style="margin-top:15px;margin-bottom: 2px;">DodoLoader</h1>
+            <p style="margin: 2px;">Original Ice Dodo by <a href="https://onionfist.com">Onionfist/Jason</a></p>
+            <p style="font-size:xx-small;margin:2px;">-</p>
+            <p style="margin: 2px;">Dodoloader by Guy</p>
             <button style="width:45%;" onclick="window.location.href='singleplayer'">Play Now</button>
+            <br>
+            <button onclick="localStorage.clear();window.location.reload()">Clear All Custom</button>
+            <img src="/assets/svgs/caret-right-fill.svg" id="rightArrow" class="arrow" style="float:right;margin-right:50px;" onclick="cycleRight()">
+            <img src="/assets/svgs/caret-left-fill.svg" id="leftArrow" class="arrow" style="float:left;margin-left:50px;" onclick="cycleLeft()">
             <p style="font-size:xx-small;padding-bottom: 10px;">if game does not load you messed up the cups, clear them</p>
         </div>
-        <form id="Cupadder">
-            <h3>Add Cup</h3>
-            <input type="text" id="name">
-            <p style="font-size: small;">Name of cup</p>
+        <div id="0">
+            <form id="Cupadder">
+                <h3>Add Cup</h3>
+                <input type="text" id="name">
+                <p style="font-size: small;">Name of cup</p>
+                <br>
+                <input style="width:90%;margin-left:5%;margin-right:5%;font-family:arial;" type="text" id="maps">
+                <p style="font-size:small;font-family:arial;">Maps for cup<br>make sure you type it like this example:<br>[{diff:1,id:"glass_walkway",name:"Glass Walkway"},{diff:1,id:"lucid_dreams",name:"Lucid Dreams"}]<br>the diff is the difficulty that map will show as</p>
+                <br>
+                <input type="file" accept="image/png" id="image">
+                <p style="font-size: small;">Image for cup (PNG only)</p>
+            </form>
+            <button onclick="SaveConfig()">Add Cup</button>
             <br>
-            <input style="width:90%;margin-left:5%;margin-right:5%;" type="text" id="maps">
-            <p style="font-size: small;">Maps for cup<br>make sure you type it like this example:<br>[{diff:1,id:"glass_walkway",name:"Glass Walkway"},{diff:1,id:"lucid_dreams",name:"Lucid Dreams"}]<br>the diff is the difficulty that map will show as</p>
+            <p>Export/Import</p>
+            <input id="cupExport" type="number">
+            <p style="font-size: small;">Number of cup you made</p>
+            <button id="export" style="margin-right:5px" onclick="exportCup()">Export</button>
+            <button id="import" onclick="importCup()">Import</button>
             <br>
-            <input type="file" accept="image/png" id="image">
-            <p style="font-size: small;">Image for cup (PNG only)</p>
-        </form>
-        <button onclick="SaveConfig()">Add Cup</button>
-        <button onclick="localStorage.clear();window.location.reload()">Clear Custom Cups</button>
-        <br>
-        <p>Export/Import</p>
-        <input id="cupExport" type="number">
-        <p style="font-size: small;">Number of cup you made</p>
-        <button id="export" style="margin-right:5px" onclick="exportCup()">Export</button>
-        <button id="import" onclick="importCup()">Import</button>
-        <br>
-        <textarea style="color:black;font-size: xx-small;font-family: arial;" id="exportimport"></textarea>
-        <p>Custom Cups Added</p>
+            <textarea style="color:black;font-size: xx-small;font-family: arial;" id="exportimport"></textarea>
+            <p>Custom Cups Added</p>
+        </div>
+        <div id="1" style="display:none;">
+            <h3>Custom Maps</h3>
+            <p style="font-size: small;">Name Of Map</p>
+            <input id="ImportMapId" type="text">
+            <p style="font-size: small;">Map Script</p>
+            <textarea style="color:black;font-size: xx-small;font-family: arial;" id="ImportCustomMap"></textarea>
+            <button id="importMap" onclick="ImportMap()">Import</button>
+        </div>
+        <p style="visibility:hidden;margin-bottom: 5%;">spacer</p>
     </div>
     <script type="text/javascript">
         if (localStorage.getItem("CupNames") == null){
@@ -102,6 +127,9 @@
         }
         if (localStorage.getItem("CupImages") == null){
             localStorage.setItem("CupImages",JSON.stringify([]))
+        }
+        if (localStorage.getItem("CustomMaps") == null){
+            localStorage.setItem("CustomMaps",JSON.stringify([]))
         }
         function LocalList(name) {return JSON.parse(localStorage.getItem(name))}
         function SaveConfig(){
@@ -127,10 +155,10 @@
             reader.readAsDataURL(image);
             window.location.reload();
         }
-        const menu = document.getElementById("Menu");
+        const Cupmenu = document.getElementById("0");
         function GetCustomCups(){
             for (let i = 0; i < LocalList("CupNames").length; i++){ {
-                menu.innerHTML += "<div style='padding:5px;border: 2px solid #1e1e1e;border-radius: 5px;width:10vw;height:10vw; background-image: url("+LocalList("CupImages")[i]+");background-size: cover;'><p style='padding:2px;border:2px solid #bbbbbb;background: #8A0468;border-radius: 5px;position:relative;top:20%;width-min:50%;font-size:70%;width:fit-content;overflow-wrap: break-word;'>"+LocalList("CupNames")[i]+"</p></div>";
+                Cupmenu.innerHTML += "<div style='padding:5px;border: 2px solid #1e1e1e;border-radius: 5px;width:10vw;height:10vw; background-image: url("+LocalList("CupImages")[i]+");background-size: cover;'><p style='padding:2px;border:2px solid #bbbbbb;background: #8A0468;border-radius: 5px;position:relative;top:20%;width-min:50%;font-size:70%;width:fit-content;overflow-wrap: break-word;'>"+LocalList("CupNames")[i]+"</p></div>";
             }}
         }
         GetCustomCups();
@@ -165,6 +193,31 @@
 
             window.location.reload();
         }
+        const MaxIndex = 1;
+        let currentIndex = 0;
+        function cycleRight() {
+            if (currentIndex < MaxIndex) {
+                currentIndex++;
+                document.getElementById((currentIndex-1).toString()).style.display = "none";
+                document.getElementById(currentIndex.toString()).style.display = "block";
+            }
+        }
+        function cycleLeft() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                document.getElementById((currentIndex+1).toString()).style.display = "none";
+                document.getElementById(currentIndex.toString()).style.display = "block";
+            }
+        }
+        function ImportMap() {
+            let ImportMap = document.getElementById("ImportCustomMap").value;
+            let ImportMapId = document.getElementById("ImportMapId").value;
+            let CustomMaps = LocalList("CustomMaps");
+            CustomMaps.push({id: ImportMapId, map: ImportMap});
+            console.log(CustomMaps)
+            localStorage.setItem("CustomMaps", JSON.stringify(CustomMaps));
+        }
+        console.log(JSON.parse(localStorage.getItem("CustomMaps")))
     </script>
     
 </center></body></html>

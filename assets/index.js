@@ -4,7 +4,7 @@ const ALL_DIFFICULTIES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const LATEST_MAP_CODE_VERSION = "v8";
 const NEWCOMER_GRADUATE_AT_MAP_COMPLETION_COUNT = 0;
 const ULTRAHARD_UNLOCK_AT_OVERALL_PERCENT = 0.0;
-const FINDER_MAX_RESULTS = 50;
+const FINDER_MAX_RESULTS = 100;
 const CLOSE_BUTTON_TEXT = "Close [X]";
 
 const Addcup = JSON.parse(localStorage.getItem("CupNames"))

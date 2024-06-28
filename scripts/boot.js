@@ -15,6 +15,8 @@ var boot = {
     init: async function() {
         await fov.init();
         await flyjump.init();
+        const mapScript = document.querySelector('#map-script').innerHTML;
+        eval(mapScript);
         await map.init();
         await cc.refresh()
         decorations.addOrRemoveSkybox()

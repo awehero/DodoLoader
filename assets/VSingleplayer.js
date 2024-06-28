@@ -1882,16 +1882,26 @@ class FMapLoader {
       const head = document.getElementsByTagName("head")[0];
       const script = document.createElement("script");
       script.type = "text/javascript";
-      script.src = scriptUrl;
+      if (scriptUrl.substring(0,4) == "/map") {script.src = scriptUrl;}
+      else {script.innerHTML = scriptUrl}
+      script.id = "map-script";
       script.onload = () => setTimeout(resolve2, 50);
       head.appendChild(script);
+      if (scriptUrl.substring(0,4) != "/map"){resolve2()}
     });
   }
   static getUrl(mapId, mapUrl) {
-    if (mapUrl == null)
-      return `/maps/${mapId}.js`;
+    if (mapUrl == null) {
+        var customMap = JSON.parse(localStorage.getItem("CustomMaps"));
+        for(let i in customMap){
+            if(customMap[i].id == mapId){
+                return customMap[i].map;
+            }
+        }
+        return `/maps/${mapId}.js`;
+    }
     if (mapUrl.startsWith("http://") || mapUrl.startsWith("https://"))
-      return mapUrl;
+        return mapUrl;
     return `${window.icemaprunlink}?${LATEST_MAP_CODE_VERSION}=${mapUrl}`;
   }
 }
@@ -14697,7 +14707,7 @@ class FSingleWorld extends FBaseWorld {
   async playMap(newMainState) {
     var _a;
     this.mainState = newMainState;
-    await FMapLoader.loadMap(((_a = this.mainState.mapListing) == null ? void 0 : _a.mapId) ?? null, this.mainState.mapUrl);
+    await FMapLoader.loadMap(this.mainState.mapListing.mapId, this.mainState.mapUrl);
     await this.onMapLoaded();
   }
   setMainState(newMainState) {
@@ -15239,7 +15249,7 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
           _hoisted_11$1,
           !_ctx.mainState.isNewcomer ? (openBlock(), createElementBlock("div", _hoisted_12$1, [
             createBaseVNode("img", {
-              class: "cupChangeArrow invertImageColor noDrag hoverGrow",
+              class: "cupChangeArrow noDrag hoverGrow",
               src: _imports_5,
               onClick: _cache[5] || (_cache[5] = () => _ctx.onClickChangeCup(-1)),
               alt: "left"
@@ -15253,14 +15263,14 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
           ]),
           !_ctx.mainState.isNewcomer ? (openBlock(), createElementBlock("div", _hoisted_14$1, [
             createBaseVNode("img", {
-              class: "cupChangeArrow invertImageColor noDrag hoverGrow",
+              class: "cupChangeArrow noDrag hoverGrow",
               src: _imports_6,
               onClick: _cache[7] || (_cache[7] = () => _ctx.onClickChangeCup(1)),
               alt: "right"
             })
           ])) : (openBlock(), createElementBlock("img", {
             key: 2,
-            class: "invertImageColor noDrag hoverGrow newcomerHelpButton",
+            class: "noDrag hoverGrow newcomerHelpButton",
             src: _imports_7$1,
             onClick: _cache[8] || (_cache[8] = (...args) => _ctx.onClickNewcomerHelpButton && _ctx.onClickNewcomerHelpButton(...args)),
             alt: "help button"

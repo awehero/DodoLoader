@@ -1,7 +1,5 @@
 /* eslint-disable */
-
-const KILLER_BOUNCE = 99999999
-
+let KILLER_BOUNCE = 999999
 var maker = {
     platform_count: 0,
     cone_count: 0,
@@ -31,6 +29,8 @@ var maker = {
         }  
     },
     make_platform: function(posList, rotList, sizList, imat=0, bounce=0, mass=0, friction=0.6, jump=false, air=false, isKiller=false, isDriftOn=false) {
+        let godmode = document.getElementById("godmode");
+        if (godmode.checked) {KILLER_BOUNCE = 0}
         if (isKiller == true) {
             bounce = KILLER_BOUNCE
         }
@@ -74,6 +74,51 @@ var maker = {
 
         // Tracker
         this.platform_count += 1;
+    },
+    make_torus: function(posList, rotList, sizList, imat=0, bounce=0, mass=0, friction=0.6, jump=false, air=false, isKiller=false, isDriftOn=false) {
+        if (isKiller == true) {
+            bounce = KILLER_BOUNCE
+        }
+        // Data
+        let pX = posList[0]; let pY = posList[1]; let pZ = posList[2];
+        let rX = rotList[1]; let rY = rotList[0]; let rZ = rotList[2];
+        let sX = sizList[0]; let sY = sizList[1]; let sZ = sizList[2];
+        pY += Math.random() * 0.0007;
+        // Mesh
+        let mesh_name = "T" + this.torus_count;
+        var torus;
+
+        function isNum(x) {
+            return (isNaN(Math.round(x)) == false);
+        }
+        if (isNum(imat)) {
+            imat = Math.round(imat);
+            torus = (this["toru"+imat] || this["toru"+0]).createInstance(mesh_name);
+            if (imat == -1) torus.isVisible = false;
+        } else {
+            torus = BABYLON.Mesh.CreateBox(mesh_name,1, scene);
+            torus.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
+            let color_obj = decorations.hexToRgb("#"+imat);
+            torus.material = decorations.rgba_mat(color_obj.r, color_obj.g, color_obj.b, color_obj.a);
+        }
+        
+        // Set
+        torus.scaling = new BABYLON.Vector3(sX,sY,sZ);
+        torus.position = new BABYLON.Vector3(pX,pY,pZ);
+        torus.rotation = new BABYLON.Vector3(rX,rY,rZ);
+
+        if (air == false) {
+            torus.physicsImpostor = new BABYLON.PhysicsImpostor(torus, BABYLON.PhysicsImpostor.BoxImpostor, { mass: mass, restitution: bounce, friction: friction}, scene);
+        }
+        if (jump == true) {
+            jumppads.push(torus);
+        }
+        if (isDriftOn == true) {
+            driftPads.push(torus)
+        }
+
+        // Tracker
+        this.torus_count += 1;
     },
     make_cone: function(posList, imat) {
         // Data

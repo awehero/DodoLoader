@@ -47,7 +47,7 @@ var update = {
 	collision_check: function() {
         let godmodeCheckbox = document.getElementById("godmode");
         let freeze = document.getElementById("freeze");
-        if (!godmodeCheckbox.checked || !freeze.checked) {
+        if (!godmodeCheckbox.checked) {
             if (player.position.y < -20) {change_state.die('Fell To Death')}
             if (player.position.y > 80) {change_state.die('Left The Orbit')}
             this.checkConeCollision()
