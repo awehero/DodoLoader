@@ -116,6 +116,21 @@
             <textarea style="color:black;font-size: xx-small;font-family: arial;" id="ImportCustomMap"></textarea>
             <button id="importMap" onclick="ImportMap()">Import</button>
         </div>
+        <div id="2" style="display:none;">
+            <h2>Tutorial</h2>
+            <h3>Mod Menu</h3>
+            <p>Click on the collapsible elements of the menu to see them</p>
+            <h3>Cheats</h3>
+            <p>All cheats exept god mode have to be toggled before you enter the level or if you die and restart</p>
+            <h3>Dodo Cinematics</h3>
+            <p>This is a tool for viewing maps and making freecam videos</p>
+            <p>Freecam: frees camera from player</p>
+            <p>Freeze Dodo: freezes dodo in place (must go menu and back to disable)</p>
+            <p>Follow Player: looks at the player at all times automatically</p>
+            <p>You can use the buttons or use ijkl controls to move + p; to move up and down</p>
+            <p>You can use the bottons or hold shift with ijkl to rotate camera</p>
+            <a href="https://discord.gg/hQvKAdEH5Q">Any questions?</a>
+        </div>
         <p style="visibility:hidden;margin-bottom: 5%;">spacer</p>
     </div>
     <script type="text/javascript">
@@ -193,7 +208,7 @@
 
             window.location.reload();
         }
-        const MaxIndex = 1;
+        const MaxIndex = 2;
         let currentIndex = 0;
         function cycleRight() {
             if (currentIndex < MaxIndex) {
@@ -201,11 +216,21 @@
                 document.getElementById((currentIndex-1).toString()).style.display = "none";
                 document.getElementById(currentIndex.toString()).style.display = "block";
             }
+            else {
+                currentIndex = 0;
+                document.getElementById(MaxIndex.toString()).style.display = "none";
+                document.getElementById(currentIndex.toString()).style.display = "block";
+            }
         }
         function cycleLeft() {
             if (currentIndex > 0) {
                 currentIndex--;
                 document.getElementById((currentIndex+1).toString()).style.display = "none";
+                document.getElementById(currentIndex.toString()).style.display = "block";
+            }
+            else {
+                currentIndex = MaxIndex;
+                document.getElementById("0").style.display = "none";
                 document.getElementById(currentIndex.toString()).style.display = "block";
             }
         }
