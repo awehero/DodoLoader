@@ -110,7 +110,7 @@
             <div class="LevelEditorOption">
                 <button id="toggleLevelEditorObjects" class="modbutton">LevelEditor Objects</button>
                 <div class="LevelEditorObjects" style="max-height:25vh;overflow-y: auto;">
-                    <button class="button" id="GetAllObjects">get All Objects</button>
+                    <button class="button" id="GetAllObjects">get All Objects (emergency)</button>
                     <button class="button" id="DeleteAllMadeObjects">Delete All (made) Objects</button>
                     <button class="button" id="DeleteSelectedMadeObjects">Delete Selected Object</button>
                     <br>
@@ -131,6 +131,9 @@
                     <input type="text" id="xs"><input type="text" id="ys"><input type="text" id="zs">
                     <br>
                     <button class="button" id="ControlButton">Set</button>
+                    <br>
+                    <button class="button" id="Export">Export Level</button>
+                    <textarea style="color:black;font-size: xx-small;font-family: arial;" id="ExportMap"></textarea>
                 </div>
             </div>
         </div>
@@ -158,37 +161,59 @@
 
             let lasthighlight;
             $("#ObjectSelector").on("input", function() {
+                try{meshes[lasthighlight].showBoundingBox = false;}catch{}
                 lasthighlight = $(this).val();
-                meshes[$(this).val()].renderOutline = true;
-                meshes[$(this).val()].outlineColor = new BABYLON.Color3(0, 1, 0);
-                meshes[$(this).val()].outlineWidth = 0.1;
-                meshes[lasthighlight].renderOutline = false;
+                meshes[$(this).val()].showBoundingBox = true;
             });
 
             let meshes;
+            let platforms;
+            let cones;
+            let spheres;
+            let ends;
+            let cylinders;
             // gotta add unselector
-            $("#GetAllObjects").click(function() {
+            function GetAllObjects() {
                 meshes = null;
+                platforms = null;
+                cones = null;
+                spheres = null;
+                ends = null;
+                cylinders = null;
                 document.getElementById("ObjectSelector").innerHTML = "<option> </option>";
                 meshes = scene.getMeshesByTags("mesh")
-                console.log(meshes.length)
+                platforms = scene.getMeshesByTags("platform")
+                cones = scene.getMeshesByTags("cone")
+                spheres = scene.getMeshesByTags("sphere")
+                ends = scene.getMeshesByTags("end")
+                cylinders = scene.getMeshesByTags("cylinder")
                 for(let i = 0;i < meshes.length;i++) {
-                    console.log(meshes[i])
                     document.getElementById("ObjectSelector").innerHTML += "<option value="+i+">"+meshes[i].name+"</option>"
                 }
+                // console.log(meshes.length, platforms.len)
+                // console.log("platforms: "+platforms)
+                // console.log("spheres: "+spheres)
+                // console.log("ends: "+ends)
+                // console.log("cones: "+cones)
+                // console.log("cylinders: "+cylinders)
+            }
+            $("#GetAllObjects").click(function() {
+                GetAllObjects();
             })
             $("#DeleteAllMadeObjects").click(function(){
                 for(let i = 0;i < boxnum;i++) {
                     scene.getMeshByName("box"+i).dispose()
                 }
                 for(let i = 0;i < cylindernum;i++) {
-                    scene.getMeshByName("box"+i).dispose()
+                    scene.getMeshByName("cylinder"+i).dispose()
                 }
                 boxnum = 0;
                 cylindernum = 0;
+                GetAllObjects()
             })
             $("#DeleteSelectedMadeObjects").click(function(){
                 meshes[$("#ObjectSelector").val()].dispose();
+                GetAllObjects()
             })
             let boxnum = 0
             let cylindernum = 0
@@ -201,16 +226,17 @@
                 mat.freeze();
 
                 let box = BABYLON.MeshBuilder.CreateBox("box"+boxnum, options={size:2}, scene);
-                box.checkCollisions = true;
-                box.applyGravity = false;
-                box.isPickable = false;
-                scene.collisionsEnabled = true;
-                camera.checkCollisions = true;
+                // box.checkCollisions = true;
+                // box.applyGravity = false;
+                // box.isPickable = false;
+                // scene.collisionsEnabled = true;
+                // camera.checkCollisions = true;
                 BABYLON.Tags.AddTagsTo(box, "mesh");
                 box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene)
                 box.material = mat;
                 
                 boxnum++
+                GetAllObjects()
             })
             $("#addcylinder").click(function() {
                 // texture
@@ -231,13 +257,129 @@
                 cylinder.material = mat;
                 
                 cylindernum++
+                GetAllObjects()
             })
+            function Transform(x=meshes[$("#ObjectSelector").val()].position.x,y=meshes[$("#ObjectSelector").val()].position.y,z=meshes[$("#ObjectSelector").val()].position.z,
+                               xr=meshes[$("#ObjectSelector").val()].rotation.x,yr=meshes[$("#ObjectSelector").val()].rotation.y,zr=meshes[$("#ObjectSelector").val()].rotation.z,
+                               xs=meshes[$("#ObjectSelector").val()].scaling.x,ys=meshes[$("#ObjectSelector").val()].scaling.y,zs=meshes[$("#ObjectSelector").val()].scaling.z) {
+                try{meshes[$("#ObjectSelector").val()].position = new BABYLON.Vector3(x,y,z)} catch{}
+                try{meshes[$("#ObjectSelector").val()].rotation = new BABYLON.Vector3(xr,yr,zr)} catch{}
+                try{meshes[$("#ObjectSelector").val()].scaling = new BABYLON.Vector3(xs,ys,zs)} catch{}
+            }
             $("#ControlButton").click(function() {
-                try{meshes[$("#ObjectSelector").val()].position = new BABYLON.Vector3($("#x").val(),$("#y").val(),$("#z").val())} catch{}
-                try{meshes[$("#ObjectSelector").val()].rotation = new BABYLON.Vector3($("#xr").val(),$("#yr").val(),$("#zr").val())} catch{}
-                try{meshes[$("#ObjectSelector").val()].scaling = new BABYLON.Vector3($("#xs").val(),$("#ys").val(),$("#zs").val())} catch{}
+                Transform(
+                    $("#x").val() !== "" ? $("#x").val() : undefined,$("#y").val() !== "" ? $("#y").val() : undefined,$("#z").val() !== "" ? $("#z").val() : undefined,
+                    $("#xr").val() !== "" ? $("#xr").val() : undefined,$("#yr").val() !== "" ? $("#yr").val() : undefined,$("#zr").val() !== "" ? $("#zr").val() : undefined,
+                    $("#xs").val() !== "" ? $("#xs").val() : undefined,$("#ys").val() !== "" ? $("#ys").val() : undefined,$("#zs").val() !== "" ? $("#zs").val() : undefined)
             })
-            
+            const MapScript1 = 'var map = {title: "EngineV9Level",song: "env2",maker: "Someone",spawn: [0, 0.5, 0],init: function() {let box;';
+            const MapScirpt2 = 'let meshes = scene.getMeshesByTags("mesh");let platforms = scene.getMeshesByTags("platform");for (let i = 0; i < meshes.length; i++){let mat = new BABYLON.StandardMaterial("mat", scene);mat.diffuseTexture = new BABYLON.Texture("assets/textures/bright.png", scene);mat.diffuseTexture.uScale = mat.diffuseTexture.vScale = 1.0;mat.backFaceCulling = false;mat.freeze();meshes[i].material = mat;}for (let i = 0; i < platforms.length; i++){platforms[i].physicsImpostor = new BABYLON.PhysicsImpostor(platforms[i], BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);}},'
+            const MapScirpt3 = 'post: function() {},section_id: 0,section_update: function() {},reset: function() {},'
+            const MapScirpt4 = 'player_move: function() {},physics_update: function() {},render_update: function() {},}'
+            let MapInit = '';
+            function Distance3D(x1, y1, z1, x2, y2, z2) {
+                return Math.sqrt(
+                    Math.abs(Math.pow(x2 - x1, 2)) + 
+                    Math.abs(Math.pow(y2 - y1, 2)) + 
+                    Math.abs(Math.pow(z2 - z1, 2))
+                );
+            }
+            // let debugmesh = BABYLON.MeshBuilder.CreateBox("box", options={size: 0.1}, scene);
+            // debugmesh.position = new BABYLON.Vector3(vertices[0].x, vertices[0].y, vertices[0].z)
+            // debugmesh = BABYLON.MeshBuilder.CreateBox("box", options={size: 0.1}, scene);
+            // debugmesh.position = new BABYLON.Vector3(vertices[4].x, vertices[4].y, vertices[4].z)
+            function ExportMap() {
+                GetAllObjects();
+                for (let i = 0; i < platforms.length; i++) {
+                    platforms[i].computeWorldMatrix(true);
+                    let worldMatrix = platforms[i].getWorldMatrix();
+
+                    let rotationQuaternion = platforms[i].rotationQuaternion;
+                    if (!rotationQuaternion) {
+                        rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(platforms[i].rotation.y, platforms[i].rotation.x, platforms[i].rotation.z);
+                    }
+                    let rotation = rotationQuaternion.toEulerAngles();
+
+                    let data = BABYLON.VertexData.ExtractFromMesh(platforms[i]);
+                    data.transform(worldMatrix);
+                    // 0 1 corners
+                    // 0 2 width
+                    // 0 3 height
+                    // 0 4 depth
+                    let boundingBox = platforms[i].getBoundingInfo().boundingBox;
+                    let center = boundingBox.center;
+                    let vertices = boundingBox.vectorsWorld
+                    let width = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[2].x, vertices[2].y, vertices[2].z);
+                    let height = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[3].x, vertices[3].y, vertices[3].z);
+                    let depth = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[4].x, vertices[4].y, vertices[4].z);
+
+                    MapInit += `box = BABYLON.MeshBuilder.CreateBox('${platforms[i].name}', {size: 1}, scene);
+                                        box.scaling = new BABYLON.Vector3(${width}, ${height}, ${depth});
+                                        box.position = new BABYLON.Vector3(${center.x}, ${center.y}, ${center.z});
+                                        box.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
+                                        BABYLON.Tags.AddTagsTo(box, 'mesh');`;
+                }
+                for (let i = 0; i < cones.length; i++) {
+                    cones[i].computeWorldMatrix(true);
+                    let worldMatrix = cones[i].getWorldMatrix();
+
+                    let rotationQuaternion = cones[i].rotationQuaternion;
+                    if (!rotationQuaternion) {
+                        rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(cones[i].rotation.y, cones[i].rotation.x, cones[i].rotation.z);
+                    }
+                    let rotation = rotationQuaternion.toEulerAngles();
+
+                    let data = BABYLON.VertexData.ExtractFromMesh(cones[i]);
+                    data.transform(worldMatrix);
+                    // 0 1 corners
+                    // 0 2 width
+                    // 0 3 height
+                    // 0 4 depth
+                    let boundingBox = cones[i].getBoundingInfo().boundingBox;
+                    let center = boundingBox.center;
+                    let vertices = boundingBox.vectorsWorld
+                    let width = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[2].x, vertices[2].y, vertices[2].z);
+                    let height = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[3].x, vertices[3].y, vertices[3].z);
+                    let depth = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[4].x, vertices[4].y, vertices[4].z);
+                    MapInit += `cone = BABYLON.MeshBuilder.CreateCylinder('${cones[i].name}', {diameterTop: 0, diameterBottom:${width}, height:${height-0.1}}, scene);
+                                        cone.scaling = new BABYLON.Vector3(${width}, ${height-0.05}, ${depth});
+                                        cone.position = new BABYLON.Vector3(${center.x-0.05}, ${center.y}, ${center.z});
+                                        cone.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
+                                        BABYLON.Tags.AddTagsTo(cone, 'mesh');`;
+                }
+                for (let i = 0; i < ends.length; i++) {
+                    ends[i].computeWorldMatrix(true);
+                    let worldMatrix = ends[i].getWorldMatrix();
+
+                    let rotationQuaternion = ends[i].rotationQuaternion;
+                    if (!rotationQuaternion) {
+                        rotationQuaternion = BABYLON.Quaternion.RotationYawPitchRoll(ends[i].rotation.y, ends[i].rotation.x, ends[i].rotation.z);
+                    }
+                    let rotation = rotationQuaternion.toEulerAngles();
+
+                    let data = BABYLON.VertexData.ExtractFromMesh(ends[i]);
+                    data.transform(worldMatrix);
+                    // 0 1 corners
+                    // 0 2 width
+                    // 0 3 height
+                    // 0 4 depth
+                    let boundingBox = ends[i].getBoundingInfo().boundingBox;
+                    let center = boundingBox.center;
+                    let vertices = boundingBox.vectorsWorld
+                    let width = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[2].x, vertices[2].y, vertices[2].z);
+                    let height = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[3].x, vertices[3].y, vertices[3].z);
+                    MapInit += `cone = BABYLON.MeshBuilder.CreateCylinder('${ends[i].name}', {diameterTop: ${width}, diameterBottom:${width}, height:${height}}, scene);
+                                        cone.position = new BABYLON.Vector3(${center.x-0.05}, ${center.y}, ${center.z});
+                                        cone.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
+                                        BABYLON.Tags.AddTagsTo(cone, 'mesh');`;
+                }
+                eval(MapInit)
+                return MapInit
+            }
+            $("#Export").click(function(){
+                $("#ExportMap").val(MapScript1+ExportMap()+MapScirpt2+MapScirpt3+MapScirpt4);
+            })
+
             $('#gravity').val('-9');
             $('#speed').val('0.28');
             $("#speedindicator").text($("#speed").val());

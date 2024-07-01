@@ -7856,6 +7856,7 @@ class CondensedMapUtils {
         ];
       case CupIdEnum.Modded:
         return [
+          { diff: 0, id: "EngineV9", name: "Engine V9"},
           { diff: 0, id: "bad_apple", name: "Bad Apple" },
           { diff: 1, id: "orbit", name: "Orbit" },
           { diff: 6, id: "ice_rhythm", name: "Ice Rhythm" },

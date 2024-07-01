@@ -50,13 +50,13 @@ var maker = {
             imat = Math.round(imat);
             platform = (this["plat"+imat] || this["plat"+0]).createInstance(mesh_name);
             if (imat == -1) platform.isVisible = false;
-            BABYLON.Tags.AddTagsTo(platform, "mesh");
+            BABYLON.Tags.AddTagsTo(platform, "mesh platform");
         } else {
             platform = BABYLON.Mesh.CreateBox(mesh_name,1, scene);
             platform.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
             let color_obj = decorations.hexToRgb("#"+imat);
             platform.material = decorations.rgba_mat(color_obj.r, color_obj.g, color_obj.b, color_obj.a);
-            BABYLON.Tags.AddTagsTo(platform, "mesh");
+            BABYLON.Tags.AddTagsTo(platform, "mesh platform");
         }
         
         // Set
@@ -97,13 +97,13 @@ var maker = {
             imat = Math.round(imat);
             torus = (this["torus"+imat] || this["torus"+0]).createInstance(mesh_name);
             if (imat == -1) torus.isVisible = false;
-            BABYLON.Tags.AddTagsTo(torus, "mesh");
+            BABYLON.Tags.AddTagsTo(torus, "mesh torus");
         } else {
             torus = BABYLON.Mesh.CreateBox(mesh_name,1, scene);
             torus.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
             let color_obj = decorations.hexToRgb("#"+imat);
             torus.material = decorations.rgba_mat(color_obj.r, color_obj.g, color_obj.b, color_obj.a);
-            BABYLON.Tags.AddTagsTo(torus, "mesh");
+            BABYLON.Tags.AddTagsTo(torus, "mesh torus");
         }
         
         // Set
@@ -139,13 +139,13 @@ var maker = {
             imat = Math.round(imat);
             cone = (this["cone"+imat] || this["cone"+0]).createInstance(mesh_name);
             if (imat == -1) cone.isVisible = false;
-            BABYLON.Tags.AddTagsTo(cone, "mesh");
+            BABYLON.Tags.AddTagsTo(cone, "mesh cone");
         } else {
             cone = BABYLON.Mesh.CreateCylinder(mesh_name, 1.0, 0.0, 1.0, 5, 1, scene, false, BABYLON.Mesh.DEFAULTSIDE);
             cone.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
             let color_obj = decorations.hexToRgb("#"+imat);
             cone.material = decorations.rgba_mat(color_obj.r, color_obj.g, color_obj.b, color_obj.a);
-            BABYLON.Tags.AddTagsTo(cone, "mesh");
+            BABYLON.Tags.AddTagsTo(cone, "mesh cone");
         }
         
         // Set
@@ -170,13 +170,13 @@ var maker = {
             imat = Math.round(imat);
             sphere = (this["sphere"+imat] || this["sphere"+0]).createInstance(mesh_name);
             if (imat == -1) sphere.isVisible = false;
-            BABYLON.Tags.AddTagsTo(sphere, "mesh");
+            BABYLON.Tags.AddTagsTo(sphere, "mesh sphere");
         } else {
             sphere = BABYLON.Mesh.CreateSphere(mesh_name, 10, 1, scene);
             sphere.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
             let color_obj = decorations.hexToRgb("#"+imat);
             sphere.material = decorations.rgba_mat(color_obj.r, color_obj.g, color_obj.b, color_obj.a);
-            BABYLON.Tags.AddTagsTo(sphere, "mesh");
+            BABYLON.Tags.AddTagsTo(sphere, "mesh sphere");
         }
         // Set
         sphere.position = new BABYLON.Vector3(pX,pY,pZ);
@@ -196,7 +196,7 @@ var maker = {
         // Mesh
         let mesh_name = "E" + this.ending_count;
         var ending = BABYLON.Mesh.CreateCylinder(mesh_name, 2.0, 2.0, 2.0, 8, 1, scene, false, BABYLON.Mesh.DEFAULTSIDE);
-        BABYLON.Tags.AddTagsTo(ending, "mesh");
+        BABYLON.Tags.AddTagsTo(ending, "mesh end");
         ending.position = new BABYLON.Vector3(pX, pY, pZ);
         // Visuals
         ending.material = decorations.materials.ending;
@@ -218,7 +218,7 @@ var maker = {
         const radius = 1;//sZ;
 
         var mesh = BABYLON.Mesh.CreateCylinder("Y" + this.cylinder_count, height, radius * topR, radius, 12, 1, scene, false, BABYLON.Mesh.DEFAULTSIDE);
-        BABYLON.Tags.AddTagsTo(mesh, "mesh");
+        BABYLON.Tags.AddTagsTo(mesh, "mesh cylinder");
         mesh.scaling = new BABYLON.Vector3(sX,sY,sZ);
         mesh.position = new BABYLON.Vector3(pX,pY,pZ);
         mesh.rotation = new BABYLON.Vector3(rX,rY,rZ);
