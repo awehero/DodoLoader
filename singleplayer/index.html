@@ -226,11 +226,6 @@
                 mat.freeze();
 
                 let box = BABYLON.MeshBuilder.CreateBox("box"+boxnum, options={size:2}, scene);
-                // box.checkCollisions = true;
-                // box.applyGravity = false;
-                // box.isPickable = false;
-                // scene.collisionsEnabled = true;
-                // camera.checkCollisions = true;
                 BABYLON.Tags.AddTagsTo(box, "mesh");
                 box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene)
                 box.material = mat;
@@ -273,7 +268,7 @@
                     $("#xs").val() !== "" ? $("#xs").val() : undefined,$("#ys").val() !== "" ? $("#ys").val() : undefined,$("#zs").val() !== "" ? $("#zs").val() : undefined)
             })
             const MapScript1 = 'var map = {title: "EngineV9Level",song: "env2",maker: "Someone",spawn: [0, 0.5, 0],init: function() {let box;';
-            const MapScirpt2 = 'let meshes = scene.getMeshesByTags("mesh");let platforms = scene.getMeshesByTags("platform");for (let i = 0; i < meshes.length; i++){let mat = new BABYLON.StandardMaterial("mat", scene);mat.diffuseTexture = new BABYLON.Texture("assets/textures/bright.png", scene);mat.diffuseTexture.uScale = mat.diffuseTexture.vScale = 1.0;mat.backFaceCulling = false;mat.freeze();meshes[i].material = mat;}for (let i = 0; i < platforms.length; i++){platforms[i].physicsImpostor = new BABYLON.PhysicsImpostor(platforms[i], BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);}},'
+            const MapScirpt2 = 'let meshes = scene.getMeshesByTags("mesh");let platforms = scene.getMeshesByTags("platform");for (let i = 0; i < meshes.length; i++){let mat = new BABYLON.StandardMaterial("mat", scene);mat.diffuseTexture = new BABYLON.Texture("assets/textures/bright.png", scene);mat.diffuseTexture.uScale = mat.diffuseTexture.vScale = 1.0;mat.backFaceCulling = false;mat.freeze();meshes[i].material = mat;}},'
             const MapScirpt3 = 'post: function() {},section_id: 0,section_update: function() {},reset: function() {},'
             const MapScirpt4 = 'player_move: function() {},physics_update: function() {},render_update: function() {},}'
             let MapInit = '';
@@ -316,6 +311,7 @@
                     MapInit += `box = BABYLON.MeshBuilder.CreateBox('${platforms[i].name}', {size: 1}, scene);
                                         box.scaling = new BABYLON.Vector3(${width}, ${height}, ${depth});
                                         box.position = new BABYLON.Vector3(${center.x}, ${center.y}, ${center.z});
+                                        box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);
                                         box.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
                                         BABYLON.Tags.AddTagsTo(box, 'mesh');`;
                 }
@@ -345,6 +341,10 @@
                                         cone.scaling = new BABYLON.Vector3(${width}, ${height-0.05}, ${depth});
                                         cone.position = new BABYLON.Vector3(${center.x-0.05}, ${center.y}, ${center.z});
                                         cone.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
+                                        cone.physicsImpostor = new BABYLON.PhysicsImpostor(cone, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);
+                                        cone.physicsImpostor.registerOnPhysicsCollide(player.physicsImpostor, function(main, collided) {
+                                            window.change_state.die("Died From Cone");
+                                        });
                                         BABYLON.Tags.AddTagsTo(cone, 'mesh');`;
                 }
                 for (let i = 0; i < ends.length; i++) {
@@ -368,10 +368,14 @@
                     let vertices = boundingBox.vectorsWorld
                     let width = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[2].x, vertices[2].y, vertices[2].z);
                     let height = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[3].x, vertices[3].y, vertices[3].z);
-                    MapInit += `cone = BABYLON.MeshBuilder.CreateCylinder('${ends[i].name}', {diameterTop: ${width}, diameterBottom:${width}, height:${height}}, scene);
-                                        cone.position = new BABYLON.Vector3(${center.x-0.05}, ${center.y}, ${center.z});
-                                        cone.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
-                                        BABYLON.Tags.AddTagsTo(cone, 'mesh');`;
+                    MapInit += `end = BABYLON.MeshBuilder.CreateCylinder('${ends[i].name}', {diameterTop: ${width}, diameterBottom:${width}, height:${height}}, scene);
+                                        end.position = new BABYLON.Vector3(${center.x-0.05}, ${center.y}, ${center.z});
+                                        end.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
+                                        end.physicsImpostor = new BABYLON.PhysicsImpostor(end, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);
+                                        end.physicsImpostor.registerOnPhysicsCollide(player.physicsImpostor, function(main, collided) {
+                                            window.change_state.win();
+                                        });
+                                        BABYLON.Tags.AddTagsTo(end, 'mesh');`;
                 }
                 eval(MapInit)
                 return MapInit
