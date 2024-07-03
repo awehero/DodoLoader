@@ -26,6 +26,11 @@
         }
         input[type=text] {
             width:2vw;
+        } 
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
         }
         p {
             margin: 2px;
@@ -45,6 +50,11 @@
                 <br>
                 <input id="spin" type="checkbox">
                 <label>Turn Off Spin</label>
+                <br>
+                <input id="PracticeMode" type="checkbox">
+                <label>Practice Mode</label>
+                <p>Cords + Rotation(0.0-1.0)</p>
+                <input type="number" id="PracticeX" style="width:2vw"><input type="number" id="PracticeY" style="width:2vw"><input type="number" id="PracticeZ" style="width:2vw"><input type="number" id="PracticeR" style="width:2vw">
                 <br>
                 <button id="togglecheats" class="modbutton">Cheats</button>
                 <div id="cheats">
@@ -267,8 +277,8 @@
                     $("#xr").val() !== "" ? $("#xr").val() : undefined,$("#yr").val() !== "" ? $("#yr").val() : undefined,$("#zr").val() !== "" ? $("#zr").val() : undefined,
                     $("#xs").val() !== "" ? $("#xs").val() : undefined,$("#ys").val() !== "" ? $("#ys").val() : undefined,$("#zs").val() !== "" ? $("#zs").val() : undefined)
             })
-            const MapScript1 = 'var map = {title: "EngineV9Level",song: "env2",maker: "Someone",spawn: [0, 0.5, 0],init: function() {let box;';
-            const MapScirpt2 = 'let meshes = scene.getMeshesByTags("mesh");let platforms = scene.getMeshesByTags("platform");for (let i = 0; i < meshes.length; i++){let mat = new BABYLON.StandardMaterial("mat", scene);mat.diffuseTexture = new BABYLON.Texture("assets/textures/bright.png", scene);mat.diffuseTexture.uScale = mat.diffuseTexture.vScale = 1.0;mat.backFaceCulling = false;mat.freeze();meshes[i].material = mat;}},'
+            const MapScript1 = 'var map = {title: "EngineV9Level",song: "env2",maker: "Someone",spawn: [0, 0.5, 0],init: function() {let box;let mat = new BABYLON.StandardMaterial("mat", scene);mat.diffuseTexture = new BABYLON.Texture("assets/textures/bright.png", scene);mat.diffuseTexture.uScale = mat.diffuseTexture.vScale = 1.0;mat.backFaceCulling = false;mat.freeze();let conemat = new BABYLON.StandardMaterial("conemat", scene);conemat.diffuseColor = new BABYLON.Color3.FromInts(235, 50, 50);conemat.alpha = 1.0;;conemat.freeze();';
+            const MapScirpt2 = 'let meshes = scene.getMeshesByTags("mesh");let platforms = scene.getMeshesByTags("platform");let cones = scene.getMeshesByTags("cone");for (let i = 0; i < platforms.length; i++){platforms[i].material = mat;}for (let i = 0; i < cones.length; i++){cones[i].material = conemat;}},'
             const MapScirpt3 = 'post: function() {},section_id: 0,section_update: function() {},reset: function() {},'
             const MapScirpt4 = 'player_move: function() {},physics_update: function() {},render_update: function() {},}'
             let MapInit = '';
@@ -309,11 +319,11 @@
                     let depth = Distance3D(vertices[0].x, vertices[0].y, vertices[0].z, vertices[4].x, vertices[4].y, vertices[4].z);
 
                     MapInit += `box = BABYLON.MeshBuilder.CreateBox('${platforms[i].name}', {size: 1}, scene);
-                                        box.scaling = new BABYLON.Vector3(${width}, ${height}, ${depth});
-                                        box.position = new BABYLON.Vector3(${center.x}, ${center.y}, ${center.z});
-                                        box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);
-                                        box.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
-                                        BABYLON.Tags.AddTagsTo(box, 'mesh');`;
+                                box.scaling = new BABYLON.Vector3(${width}, ${height}, ${depth});
+                                box.position = new BABYLON.Vector3(${center.x}, ${center.y}, ${center.z});
+                                box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);
+                                box.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
+                                BABYLON.Tags.AddTagsTo(box, 'mesh');`;
                 }
                 for (let i = 0; i < cones.length; i++) {
                     cones[i].computeWorldMatrix(true);
@@ -384,6 +394,10 @@
                 $("#ExportMap").val(MapScript1+ExportMap()+MapScirpt2+MapScirpt3+MapScirpt4);
             })
 
+            $('#PracticeX').val('0');
+            $('#PracticeY').val('1');
+            $('#PracticeZ').val('0');
+            $('#PracticeR').val('0');
             $('#gravity').val('-9');
             $('#speed').val('0.28');
             $("#speedindicator").text($("#speed").val());

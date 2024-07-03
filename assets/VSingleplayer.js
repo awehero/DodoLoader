@@ -735,6 +735,9 @@ class FSingleInputManager extends FBaseInputManager {
   onKeyDown(event) {
     switch (event.code) {
       case "KeyA":
+        if (window.platformermode) {const positionAdjustment = window.tsTriggers.getPositionAdjustment()
+            player.position.x -= positionAdjustment.z;
+            player.position.z += positionAdjustment.x;break}
       case "ArrowLeft":
         if (!this.isOnMenuOrGame())
           break;
@@ -747,7 +750,11 @@ class FSingleInputManager extends FBaseInputManager {
           this.world.changeCupByDeltaIndex(-1);
         break;
       case "KeyD":
+        if (window.platformermode) {const positionAdjustment = window.tsTriggers.getPositionAdjustment()
+            player.position.x += positionAdjustment.z;
+            player.position.z -= positionAdjustment.x;break}
       case "ArrowRight":
+        // if (window.platformermode) {window.Rightpress = true;break}
         if (!this.isOnMenuOrGame())
           break;
         if (this.world.isShowingPopup)
@@ -759,8 +766,13 @@ class FSingleInputManager extends FBaseInputManager {
           this.world.changeCupByDeltaIndex(1);
         break;
       case "KeyW":
+        // if (window.platformermode) {window.Wpress = true;break}
+        if (window.platformermode) {const positionAdjustment = window.tsTriggers.getPositionAdjustment()
+            player.position.x += positionAdjustment.x;
+            player.position.z += positionAdjustment.z;break}
       case "ArrowUp":
       case "Space":
+        if (window.platformermode) {flyjump.jump()}
         if (!this.isOnMenuOrGame())
           break;
         if (this.world.isShowingPopup)
@@ -772,6 +784,10 @@ class FSingleInputManager extends FBaseInputManager {
         this.world.endingManager.onSpacePressed();
         break;
       case "KeyS":
+        // if (window.platformermode) {window.Spress = true;break}
+        if (window.platformermode) {const positionAdjustment = window.tsTriggers.getPositionAdjustment()
+            player.position.x -= positionAdjustment.x;
+            player.position.z -= positionAdjustment.z;break}
       case "ArrowDown":
       case "ShiftLeft":
         if (!this.isOnMenuOrGame())
@@ -1773,6 +1789,7 @@ class FBaseOverlayManager {
   }
   hideAllSigns() {
     this.setJumpEnabledSignVisibility(false);
+    this.setPlatformerSignVisibility(false)
     this.setControlsReversedSignVisibility(false);
     this.setDriftEnabledSignVisibility(false);
   }
@@ -1799,6 +1816,13 @@ class FBaseOverlayManager {
   setJumpEnabledSignVisibility(isVisible) {
     const overlayJumpEnabledDiv = document.getElementById("overlayJumpEnabled");
     overlayJumpEnabledDiv.style.visibility = isVisible ? "visible" : "hidden";
+    if (isVisible)
+      this.didEncounterJumpRegion = true;
+  }
+  setPlatformerSignVisibility(isVisible) {
+    const overlayPlatformerEnabledDiv = document.getElementById("overlayPlatformerEnabled");
+    overlayPlatformerEnabledDiv.style.visibility = isVisible ? "visible" : "hidden";
+    window.platformermode = isVisible ? true : false;
     if (isVisible)
       this.didEncounterJumpRegion = true;
   }
@@ -14757,6 +14781,7 @@ const _imports_0$4 = "/assets/svgs/fullscreen.svg";
 const _imports_0$3 = "/assets/svgs/sound-on.svg";
 const _imports_2$2 = "/assets/svgs/arrow-left.svg";
 const _imports_1$2 = "/assets/svgs/jump_enabled.svg";
+const _imports_1$3 = "/assets/svgs/arrow-left.svg";
 const _imports_2$1 = "/assets/svgs/controls_reversed.svg";
 const _imports_3$1 = "/assets/svgs/drift_enabled.svg";
 const _imports_7$1 = "/assets/svgs/help.svg";
@@ -14769,7 +14794,7 @@ const _hoisted_3$d = { id: "overlay" };
 const _hoisted_4$9 = /* @__PURE__ */ _withScopeId$9(() => /* @__PURE__ */ createBaseVNode("div", { id: "overlayLoadingScreen" }, [
   /* @__PURE__ */ createBaseVNode("h1", { class: "textLarge" }, "Loading map ...")
 ], -1));
-const _hoisted_5$8 = /* @__PURE__ */ createStaticVNode('<img id="overlayToggleSound" class="hoverGrow noDrag" src="' + _imports_0$3 + '" data-v-31fa11aa><img id="overlayMenuButton" class="hoverGrow noDrag" src="' + _imports_2$2 + '" data-v-31fa11aa><div id="overlayCurrentTime" class="textLarge overlayTime" data-v-31fa11aa>TIME: ??</div><div id="overlayBestTime" class="textLarge overlayTime" data-v-31fa11aa>BEST: ??</div><div id="overlayMapName" class="textLarge" data-v-31fa11aa>??</div><div id="overlayFps" class="textLarge" data-v-31fa11aa>?? FPS</div><div id="overlayInGameMessage" data-v-31fa11aa>??</div><div id="overlayControlChangeContainer" data-v-31fa11aa><div class="overlayControlChangeItem" id="overlayJumpEnabled" data-v-31fa11aa><h1 class="textLarge" data-v-31fa11aa>JUMP ENABLED</h1><img src="' + _imports_1$2 + '" data-v-31fa11aa></div><div class="overlayControlChangeItem" id="overlayControlsReversed" data-v-31fa11aa><h1 class="textLarge" data-v-31fa11aa>CONTROLS REVERSED</h1><img src="' + _imports_2$1 + '" data-v-31fa11aa></div><div class="overlayControlChangeItem" id="overlayDriftEnabled" data-v-31fa11aa><h1 class="textLarge" data-v-31fa11aa>DRIFT ENABLED</h1><img src="' + _imports_3$1 + '" data-v-31fa11aa></div></div>', 8);
+const _hoisted_5$8 = /* @__PURE__ */ createStaticVNode('<img id="overlayToggleSound" class="hoverGrow noDrag" src="' + _imports_0$3 + '" data-v-31fa11aa><img id="overlayMenuButton" class="hoverGrow noDrag" src="' + _imports_2$2 + '" data-v-31fa11aa><div id="overlayCurrentTime" class="textLarge overlayTime" data-v-31fa11aa>TIME: ??</div><div id="overlayBestTime" class="textLarge overlayTime" data-v-31fa11aa>BEST: ??</div><div id="overlayMapName" class="textLarge" data-v-31fa11aa>??</div><div id="overlayFps" class="textLarge" data-v-31fa11aa>?? FPS</div><div id="overlayInGameMessage" data-v-31fa11aa>??</div><div id="overlayControlChangeContainer" data-v-31fa11aa><div class="overlayControlChangeItem" id="overlayJumpEnabled" data-v-31fa11aa><h1 class="textLarge" data-v-31fa11aa>JUMP ENABLED</h1><img src="' + _imports_1$2 + '" data-v-31fa11aa></div><div class="overlayControlChangeItem" id="overlayPlatformerEnabled" data-v-31fa11aa><h1 class="textLarge" data-v-31fa11aa>PLATFORMER</h1><img src="' + _imports_1$3 + '" data-v-31fa11aa></div><div class="overlayControlChangeItem" id="overlayControlsReversed" data-v-31fa11aa><h1 class="textLarge" data-v-31fa11aa>CONTROLS REVERSED</h1><img src="' + _imports_2$1 + '" data-v-31fa11aa></div><div class="overlayControlChangeItem" id="overlayDriftEnabled" data-v-31fa11aa><h1 class="textLarge" data-v-31fa11aa>DRIFT ENABLED</h1><img src="' + _imports_3$1 + '" data-v-31fa11aa></div></div>', 8);
 const _hoisted_13$2 = { id: "ending" };
 const _hoisted_14$2 = /* @__PURE__ */ createStaticVNode('<div class="endingSpacer" data-v-31fa11aa></div><h1 id="endingMakerName" class="textLarge" data-v-31fa11aa>??</h1><div id="endingGradientStripe" data-v-31fa11aa><h1 id="endingMapName" class="textLarge" data-v-31fa11aa>??</h1><h1 id="endingMainText" class="textLarge" data-v-31fa11aa>You won!</h1></div><div id="endingTime" class="textArial" data-v-31fa11aa>TIME: ??</div><div id="endingDeathActions" data-v-31fa11aa><img id="endingHelp" class="endingIcon hoverGrow" src="' + _imports_7$1 + '" data-v-31fa11aa><div class="endingMenuButton buttonLarge noHighlight" data-v-31fa11aa>Menu [X]</div><div id="endingDeathRestartButton" class="buttonLarge noHighlight" data-v-31fa11aa>Restart [_]</div><img id="endingDeathInfo" class="endingIcon hoverGrow" src="' + _imports_7 + '" data-v-31fa11aa></div><div id="endingWinActions" data-v-31fa11aa><div class="endingMenuButton buttonLarge noHighlight" data-v-31fa11aa>Menu [X]</div><div id="endingWinRestartButton" class="buttonLarge noHighlight" data-v-31fa11aa>Play Again</div><div id="endingNextMapButton" class="buttonLarge noHighlight" data-v-31fa11aa>Next [_]</div><img id="endingWinInfo" class="endingIcon hoverGrow" src="' + _imports_7 + '" data-v-31fa11aa></div>', 6);
 const _hoisted_20$2 = {

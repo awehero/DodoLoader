@@ -87,7 +87,8 @@ var update = {
 		player.rotation.y = rotation;
 
         let freeze = document.getElementById("freeze");
-        if (!freeze.checked) {
+        if (window.platformermode) {}
+        else if (freeze.checked == false) {
             const positionAdjustment = window.tsTriggers.getPositionAdjustment()
             player.position.x += positionAdjustment.x;
             player.position.z += positionAdjustment.z;
@@ -144,6 +145,8 @@ var update = {
 		const isJumpEnabled = flyjump.can_jump;
 		cape_wings.isVisible = isJumpEnabled;
 		window.tsTriggers.setJumpEnabledSignVisibility(isJumpEnabled);
+
+        window.tsTriggers.setPlatformerSignVisibility(window.platformermode);
 
 		const isControlsReversed = (steer < 0);
 		cape_tail.isVisible = isControlsReversed;

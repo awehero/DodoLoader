@@ -28,6 +28,7 @@ var currentRoute = '/'
 
 var start = {
 	init: async function() {
+        // window.platformermode = true
 		canvas = await document.getElementById("renderCanvas");
 		engine = await this.asyncEngineCreation();
 		scene = await new BABYLON.Scene(engine, {antialiasing: false});

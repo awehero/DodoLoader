@@ -6850,6 +6850,7 @@ class FGlobalManager {
       hideInGameMessage: () => this.world.overlayManager.hideInGameMessage(),
       setJumpEnabledSignVisibility: (isVisible) => this.world.overlayManager.setJumpEnabledSignVisibility(isVisible),
       setControlsReversedSignVisibility: (isVisible) => this.world.overlayManager.setControlsReversedSignVisibility(isVisible),
+      setPlatformerSignVisibility: (isVisible) => this.world.overlayManager.setPlatformerSignVisibility(isVisible),
       setDriftEnabledSignVisibility: (isVisible) => this.world.overlayManager.setDriftEnabledSignVisibility(isVisible),
       getRotationAdjustment: () => this.world.playerManager.getRotationAdjustment(),
       getPositionAdjustment: () => this.world.playerManager.getPositionAdjustment(),

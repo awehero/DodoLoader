@@ -57,7 +57,7 @@ var flyjump = {
 			this.legacy_jump();
 			return;
 		}
-		if (!this.can_jump) return
+		if (!this.can_jump && window.platformermode == false) {return}
 		this.last_frame = score;
 		this.can_jump = false;
 
