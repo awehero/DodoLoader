@@ -23,6 +23,36 @@ var decorations = {
         this.dark.backFaceCulling = true; // false;
         this.dark.freeze();
 
+        this.flare = new BABYLON.StandardMaterial("flaremat", scene);
+        this.flare.diffuseTexture = new BABYLON.Texture("assets/textures/flare.png", scene);
+        this.flare.diffuseTexture.uScale = this.flare.diffuseTexture.vScale = 1.0;
+        this.flare.backFaceCulling = true; // false;
+        this.flare.freeze();
+
+        this.icedd = new BABYLON.StandardMaterial("iceddmat", scene);
+        this.icedd.diffuseTexture = new BABYLON.Texture("assets/textures/icedd.png", scene);
+        this.icedd.diffuseTexture.uScale = this.icedd.diffuseTexture.vScale = 1.0;
+        this.icedd.backFaceCulling = true; // false;
+        this.icedd.freeze();
+
+        this.pm1 = new BABYLON.StandardMaterial("pm1mat", scene);
+        this.pm1.diffuseTexture = new BABYLON.Texture("assets/textures/pm1.png", scene);
+        this.pm1.diffuseTexture.uScale = this.pm1.diffuseTexture.vScale = 1.0;
+        this.pm1.backFaceCulling = true; // false;
+        this.pm1.freeze();
+
+        this.pm2 = new BABYLON.StandardMaterial("pm2mat", scene);
+        this.pm2.diffuseTexture = new BABYLON.Texture("assets/textures/pm2.png", scene);
+        this.pm2.diffuseTexture.uScale = this.pm2.diffuseTexture.vScale = 1.0;
+        this.pm2.backFaceCulling = true; // false;
+        this.pm2.freeze();
+
+        this.skybox = new BABYLON.StandardMaterial("skyboxmat", scene);
+        this.skybox.diffuseTexture = new BABYLON.Texture("assets/textures/skybox.jpg", scene);
+        this.skybox.diffuseTexture.uScale = this.skybox.diffuseTexture.vScale = 1.0;
+        this.skybox.backFaceCulling = true; // false;
+        this.skybox.freeze();
+
         this.materials.plat0 = (settings.baseTexture === "dark") ? this.dark : this.bright;
 
         this.materials.plat1 = new BABYLON.StandardMaterial("plat1", scene);
@@ -193,5 +223,28 @@ var decorations = {
             }
         }
         return info;
+    },
+    decorateCustomLevel: function(meshes, platforms, cones, ends, TextureName, TextureColor) {
+        console.log(TextureName)
+        console.log(TextureColor)
+        // let meshes = scene.getMeshesByTags("mesh");
+        // let platforms = scene.getMeshesByTags("platform");
+        // let cones = scene.getMeshesByTags("cone");
+        // let ends = scene.getMeshesByTags("end");
+        for (let i=0;i<meshes.length;i++) {
+            if (BABYLON.Tags.MatchesQuery(meshes[i], "end")) {meshes[i].material = decorations.materials.ending}
+            else if (BABYLON.Tags.MatchesQuery(meshes[i], "cone")) {meshes[i].material = decorations.rgba_mat(235,50,50,1.0)}
+            // if (TextureName[i].slice(0, 3) == "mat") {
+            //     else {meshes[i].material = decorations.rgba_mat(TextureColor[i].r*255,TextureColor[i].r*255,TextureColor[i].r*255,1.0)}
+            // }
+            else {
+                if (TextureName[i] == 'darkmat'){meshes[i].material = decorations.dark}
+                else if (TextureName[i] == 'flaremat'){meshes[i].material = decorations.flare}
+                else if (TextureName[i] == 'iceddmat'){meshes[i].material = decorations.icedd}
+                else if (TextureName[i] == 'pm1mat'){meshes[i].material = decorations.pm1}
+                else if (TextureName[i] == 'pm2mat'){meshes[i].material = decorations.pm2}
+                else{meshes[i].material = decorations.bright}
+            }
+        }
     }
 }

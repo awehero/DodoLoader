@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="../libraries/jquery.js"></script>
     
     <title>Ice Dodo - UnOfficial Site</title>
     <link rel="icon" href="/assets/icons/icon.png">
@@ -140,6 +140,17 @@
                     <p>Scale</p>
                     <input type="text" id="xs"><input type="text" id="ys"><input type="text" id="zs">
                     <br>
+                    <p>Texture</p>
+                        <select id="TextureSelector">
+                            <option value=""></option>
+                            <option value="bright.png">Bright</option>
+                            <option value="dark.png">Dark</option>
+                            <option value="flare.png">Flare</option>
+                            <option value="icedd.png">Icedd</option>
+                            <option value="pm1.png">PM1</option>
+                            <option value="pm2.png">PM2</option>
+                        </select>
+                    <br>
                     <button class="button" id="ControlButton">Set</button>
                     <br>
                     <button class="button" id="Export">Export Level</button>
@@ -149,6 +160,7 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="/scripts/decorations.js?v=0.179"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".modmenuOption").hide();
@@ -182,7 +194,8 @@
             let spheres;
             let ends;
             let cylinders;
-            // gotta add unselector
+            let TextureName = [];
+            let TextureColor = [];
             function GetAllObjects() {
                 meshes = null;
                 platforms = null;
@@ -190,6 +203,8 @@
                 spheres = null;
                 ends = null;
                 cylinders = null;
+                TextureName = [];
+                TextureColor = [];
                 document.getElementById("ObjectSelector").innerHTML = "<option> </option>";
                 meshes = scene.getMeshesByTags("mesh")
                 platforms = scene.getMeshesByTags("platform")
@@ -200,12 +215,12 @@
                 for(let i = 0;i < meshes.length;i++) {
                     document.getElementById("ObjectSelector").innerHTML += "<option value="+i+">"+meshes[i].name+"</option>"
                 }
-                // console.log(meshes.length, platforms.len)
-                // console.log("platforms: "+platforms)
-                // console.log("spheres: "+spheres)
-                // console.log("ends: "+ends)
-                // console.log("cones: "+cones)
-                // console.log("cylinders: "+cylinders)
+                for (let i = 0;i<meshes.length;i++){
+                    TextureName.push(meshes[i].material.name);
+                    TextureColor.push(meshes[i].material.diffuseColor);
+                }
+                TextureName = JSON.stringify(TextureName)
+                TextureColor = JSON.stringify(TextureColor)
             }
             $("#GetAllObjects").click(function() {
                 GetAllObjects();
@@ -265,22 +280,33 @@
                 GetAllObjects()
             })
             function Transform(x=meshes[$("#ObjectSelector").val()].position.x,y=meshes[$("#ObjectSelector").val()].position.y,z=meshes[$("#ObjectSelector").val()].position.z,
-                               xr=meshes[$("#ObjectSelector").val()].rotation.x,yr=meshes[$("#ObjectSelector").val()].rotation.y,zr=meshes[$("#ObjectSelector").val()].rotation.z,
-                               xs=meshes[$("#ObjectSelector").val()].scaling.x,ys=meshes[$("#ObjectSelector").val()].scaling.y,zs=meshes[$("#ObjectSelector").val()].scaling.z) {
+                               xs=meshes[$("#ObjectSelector").val()].scaling.x,ys=meshes[$("#ObjectSelector").val()].scaling.y,zs=meshes[$("#ObjectSelector").val()].scaling.z,
+                               xr,yr,zr) {
                 try{meshes[$("#ObjectSelector").val()].position = new BABYLON.Vector3(x,y,z)} catch{}
-                try{meshes[$("#ObjectSelector").val()].rotation = new BABYLON.Vector3(xr,yr,zr)} catch{}
+                if (xr != undefined && yr != undefined && zr != undefined) {
+                    try{
+                        var rotationX = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.X, BABYLON.Tools.ToRadians(xr));
+                        var rotationY = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Y, BABYLON.Tools.ToRadians(yr));
+                        var rotationZ = BABYLON.Quaternion.RotationAxis(BABYLON.Axis.Z, BABYLON.Tools.ToRadians(zr));
+                        var combinedRotation = rotationZ.multiply(rotationY).multiply(rotationX);
+                        meshes[$("#ObjectSelector").val()].rotationQuaternion = combinedRotation;
+                    } catch{}
+                }
                 try{meshes[$("#ObjectSelector").val()].scaling = new BABYLON.Vector3(xs,ys,zs)} catch{}
+                if ($("#TextureSelector").val() == ''){}
+                else if ($("#TextureSelector").val() == 'bright.png'){meshes[$("#ObjectSelector").val()].material = decorations.bright}
+                else if ($("#TextureSelector").val() == 'dark.png'){meshes[$("#ObjectSelector").val()].material = decorations.dark}
+                else if ($("#TextureSelector").val() == 'flare.png'){meshes[$("#ObjectSelector").val()].material = decorations.flare}
+                else if ($("#TextureSelector").val() == 'icedd.png'){meshes[$("#ObjectSelector").val()].material = decorations.icedd}
+                else if ($("#TextureSelector").val() == 'pm1.png'){meshes[$("#ObjectSelector").val()].material = decorations.pm1}
+                else if ($("#TextureSelector").val() == 'pm2.png'){meshes[$("#ObjectSelector").val()].material = decorations.pm2}
             }
             $("#ControlButton").click(function() {
                 Transform(
                     $("#x").val() !== "" ? $("#x").val() : undefined,$("#y").val() !== "" ? $("#y").val() : undefined,$("#z").val() !== "" ? $("#z").val() : undefined,
-                    $("#xr").val() !== "" ? $("#xr").val() : undefined,$("#yr").val() !== "" ? $("#yr").val() : undefined,$("#zr").val() !== "" ? $("#zr").val() : undefined,
-                    $("#xs").val() !== "" ? $("#xs").val() : undefined,$("#ys").val() !== "" ? $("#ys").val() : undefined,$("#zs").val() !== "" ? $("#zs").val() : undefined)
+                    $("#xs").val() !== "" ? $("#xs").val() : undefined,$("#ys").val() !== "" ? $("#ys").val() : undefined,$("#zs").val() !== "" ? $("#zs").val() : undefined,
+                    $("#xr").val() !== "" ? $("#xr").val() : undefined,$("#yr").val() !== "" ? $("#yr").val() : undefined,$("#zr").val() !== "" ? $("#zr").val() : undefined)
             })
-            const MapScript1 = 'var map = {title: "EngineV9Level",song: "env2",maker: "Someone",spawn: [0, 0.5, 0],init: function() {let box;let mat = new BABYLON.StandardMaterial("mat", scene);mat.diffuseTexture = new BABYLON.Texture("assets/textures/bright.png", scene);mat.diffuseTexture.uScale = mat.diffuseTexture.vScale = 1.0;mat.backFaceCulling = false;mat.freeze();let conemat = new BABYLON.StandardMaterial("conemat", scene);conemat.diffuseColor = new BABYLON.Color3.FromInts(235, 50, 50);conemat.alpha = 1.0;;conemat.freeze();';
-            const MapScirpt2 = 'let meshes = scene.getMeshesByTags("mesh");let platforms = scene.getMeshesByTags("platform");let cones = scene.getMeshesByTags("cone");for (let i = 0; i < platforms.length; i++){platforms[i].material = mat;}for (let i = 0; i < cones.length; i++){cones[i].material = conemat;}},'
-            const MapScirpt3 = 'post: function() {},section_id: 0,section_update: function() {},reset: function() {},'
-            const MapScirpt4 = 'player_move: function() {},physics_update: function() {},render_update: function() {},}'
             let MapInit = '';
             function Distance3D(x1, y1, z1, x2, y2, z2) {
                 return Math.sqrt(
@@ -289,12 +315,20 @@
                     Math.abs(Math.pow(z2 - z1, 2))
                 );
             }
+            let MapScript1;
+            let MapScirpt2;
+            let MapScirpt3;
+            let MapScirpt4;
             // let debugmesh = BABYLON.MeshBuilder.CreateBox("box", options={size: 0.1}, scene);
             // debugmesh.position = new BABYLON.Vector3(vertices[0].x, vertices[0].y, vertices[0].z)
             // debugmesh = BABYLON.MeshBuilder.CreateBox("box", options={size: 0.1}, scene);
             // debugmesh.position = new BABYLON.Vector3(vertices[4].x, vertices[4].y, vertices[4].z)
             function ExportMap() {
                 GetAllObjects();
+                MapScript1 = 'var map = {title: "EngineV9Level",song: "env2",maker: "Someone",spawn: [0, 0.5, 0],init: function() {let box;';
+                MapScirpt2 = `let meshes = scene.getMeshesByTags("mesh");let platforms = scene.getMeshesByTags("platform");let cones = scene.getMeshesByTags("cone");let ends = scene.getMeshesByTags("end");decorations.decorateCustomLevel(meshes, platforms, cones, ends, ${TextureName}, ${TextureColor})},`
+                MapScirpt3 = 'post: function() {},section_id: 0,section_update: function() {},reset: function() {},'
+                MapScirpt4 = 'player_move: function() {},physics_update: function() {},render_update: function() {},}'
                 for (let i = 0; i < platforms.length; i++) {
                     platforms[i].computeWorldMatrix(true);
                     let worldMatrix = platforms[i].getWorldMatrix();
@@ -323,7 +357,7 @@
                                 box.position = new BABYLON.Vector3(${center.x}, ${center.y}, ${center.z});
                                 box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene);
                                 box.rotation = new BABYLON.Vector3(${rotation.x}, ${rotation.y}, ${rotation.z});
-                                BABYLON.Tags.AddTagsTo(box, 'mesh');`;
+                                BABYLON.Tags.AddTagsTo(box, 'mesh platform');`;
                 }
                 for (let i = 0; i < cones.length; i++) {
                     cones[i].computeWorldMatrix(true);
@@ -355,7 +389,7 @@
                                         cone.physicsImpostor.registerOnPhysicsCollide(player.physicsImpostor, function(main, collided) {
                                             window.change_state.die("Died From Cone");
                                         });
-                                        BABYLON.Tags.AddTagsTo(cone, 'mesh');`;
+                                        BABYLON.Tags.AddTagsTo(cone, 'mesh cone');`;
                 }
                 for (let i = 0; i < ends.length; i++) {
                     ends[i].computeWorldMatrix(true);
@@ -385,13 +419,14 @@
                                         end.physicsImpostor.registerOnPhysicsCollide(player.physicsImpostor, function(main, collided) {
                                             window.change_state.win();
                                         });
-                                        BABYLON.Tags.AddTagsTo(end, 'mesh');`;
+                                        BABYLON.Tags.AddTagsTo(end, 'mesh end');`;
                 }
-                eval(MapInit)
-                return MapInit
+                // eval(MapInit)
+                return MapScript1+MapInit+MapScirpt2+MapScirpt3+MapScirpt4
             }
             $("#Export").click(function(){
-                $("#ExportMap").val(MapScript1+ExportMap()+MapScirpt2+MapScirpt3+MapScirpt4);
+                const script = ExportMap();
+                $("#ExportMap").val(script);
             })
 
             $('#PracticeX').val('0');
@@ -517,7 +552,6 @@
     <script type="text/javascript" src="/libraries/babylon.js"></script>
     <script type="text/javascript" src="/scripts/fov.js?v=0.179"></script>
     <script type="text/javascript" src="/scripts/change_state.js?v=0.179"></script>
-    <script type="text/javascript" src="/scripts/decorations.js?v=0.179"></script>
     <script type="text/javascript" src="/scripts/maker.js?v=0.179"></script>
     <script type="text/javascript" src="/scripts/alias.js?v=0.179"></script>
     <script type="text/javascript" src="/scripts/const_controller.js?v=0.179"></script>

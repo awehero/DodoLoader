@@ -2,7 +2,7 @@ var map = {
     title: "EngineV9",
     song: "env2",
     maker: "Gui",
-    spawn: [0, 0.5, 0],
+    spawn: [0, 1.25, 0],
     init: function() {
         document.getElementById("freeze").checked = true;
         document.getElementById("spin").checked = true;

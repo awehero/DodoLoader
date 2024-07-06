@@ -50,13 +50,15 @@ var maker = {
             imat = Math.round(imat);
             platform = (this["plat"+imat] || this["plat"+0]).createInstance(mesh_name);
             if (imat == -1) platform.isVisible = false;
-            BABYLON.Tags.AddTagsTo(platform, "mesh platform");
+            BABYLON.Tags.AddTagsTo(platform, "mesh");
+            BABYLON.Tags.AddTagsTo(platform, "platform");
         } else {
             platform = BABYLON.Mesh.CreateBox(mesh_name,1, scene);
             platform.cullingStrategy = BABYLON.AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY;
             let color_obj = decorations.hexToRgb("#"+imat);
             platform.material = decorations.rgba_mat(color_obj.r, color_obj.g, color_obj.b, color_obj.a);
-            BABYLON.Tags.AddTagsTo(platform, "mesh platform");
+            BABYLON.Tags.AddTagsTo(platform, "platform");
+            BABYLON.Tags.AddTagsTo(platform, "mesh");
         }
         
         // Set
