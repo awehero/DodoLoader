@@ -367,6 +367,9 @@ html, body {
   margin: 0;
   padding: 0;
   background-color: black;
+  background-image: url("/assets/icons/validation2.svg");
+  background-size: 100px;
+  background-opa: 150px;
   font-family: "pixeled";
   color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
