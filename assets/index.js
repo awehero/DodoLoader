@@ -7353,18 +7353,18 @@ class CondensedMapUtils {
         ];
       case CupIdEnum.Dodo:
         return [
-          { diff: 1, id: "tut1", name: "Welcome Map" },
-          { diff: 2, id: "castle", name: "Castle" },
-          { diff: 2, id: "ice2", name: "Snowboarder" },
-          { diff: 2, id: "ravine", name: "Ravine" },
-          { diff: 3, id: "ice1", name: "Icy Path" },
-          { diff: 4, id: "motor", name: "Motor" },
-          { diff: 4, id: "floating_fortress", name: "Floating Fortress" },
-          { diff: 5, id: "cone2", name: "The Red Hats" },
-          { diff: 5, id: "cone3", name: "Dangerous Zone" },
-          { diff: 5, id: "tenet", name: "Tenet" },
-          { diff: 6, id: "cone1", name: "4D Demon Cinema" },
-          { diff: 8, id: "inverted_playground", name: "Inverted Playground" }
+          { diff: 1, id: "tut1", name: "Welcome Map", num: 0 },
+          { diff: 2, id: "castle", name: "Castle", num: 1 },
+          { diff: 2, id: "ice2", name: "Snowboarder", num: 2 },
+          { diff: 2, id: "ravine", name: "Ravine", num: 3 },
+          { diff: 3, id: "ice1", name: "Icy Path", num: 4 },
+          { diff: 4, id: "motor", name: "Motor", num: 5 },
+          { diff: 4, id: "floating_fortress", name: "Floating Fortress", num: 6 },
+          { diff: 5, id: "cone2", name: "The Red Hats", num: 7 },
+          { diff: 5, id: "cone3", name: "Dangerous Zone", num: 8 },
+          { diff: 5, id: "tenet", name: "Tenet", num: 9 },
+          { diff: 6, id: "cone1", name: "4D Demon Cinema", num: 10 },
+          { diff: 8, id: "inverted_playground", name: "Inverted Playground", num: 11 }
         ];
       case CupIdEnum.Skilled:
         return [
@@ -8123,8 +8123,10 @@ class MapUtils {
         cupId,
         mapId: condensedMapListing.id,
         diff: condensedMapListing.diff,
-        name: condensedMapListing.name
+        name: condensedMapListing.name,
+        num: condensedMapListing.num
       });
+      console.log(condensedMapListing);
     }
     if (AddMapTocup != null) {
         if (cupId >= 36 && cupId < 36 + AddMapTocup.length) {
@@ -8133,7 +8135,8 @@ class MapUtils {
                     cupId: cupId,
                     mapId: condensedMapListingMod.id,
                     diff: condensedMapListingMod.diff,
-                    name: condensedMapListingMod.name
+                    name: condensedMapListingMod.name,
+                    num: condensedMapListing.num
                 });
             }
         }

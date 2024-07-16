@@ -5,6 +5,7 @@ var __publicField = (obj, key, value) => {
   return value;
 };
 import { M as MapUtils, F as FStorage, S as StorageKeyEnum, W as WEBSITE_URL, L as LATEST_MAP_CODE_VERSION, a as FINDER_MAX_RESULTS, U as ULTRAHARD_UNLOCK_AT_OVERALL_PERCENT, C as CupIdEnum, A as ALL_CUP_IDS, b as ALL_DIFFICULTIES, c as ALL_SKIN_IDS, d as SkinIdEnum, e as CupUtils, P as PageIdEnum, N as NewcomerUtils, f as UrlUtils, g as API_SERVER_URL, h as MiscUtils, i as CLOSE_BUTTON_TEXT, j as LinkEnum, k as StorageValueEnum, l as NEWCOMER_GRADUATE_AT_MAP_COMPLETION_COUNT, D as DeploymentUtils, m as ColorEnum, n as SoundFileEnum, R as RouteEnum, o as ALL_SOUND_FILE_PATHS, p as SettingsUtils, q as ArrayUtils, r as FGlobalManager, s as defineComponent, _ as _export_sfc, t as createElementBlock, u as createBaseVNode, v as createCommentVNode, w as createStaticVNode, x as openBlock, y as pushScopeId, z as popScopeId, B as MapPropertyUtils, E as toDisplayString, G as normalizeClass, H as Fragment, I as renderList, J as createVNode, K as resolveComponent, O as normalizeStyle, Q as RecentMapUtils, T as withDirectives, V as vModelText, X as withKeys, Y as QueryKeyEnum } from "./index.js";
+import {dodoCup} from "../dodoCup.js";
 class CompletedMapUtils {
   static async getCompletionDictionary() {
     const mapCompletionDictionary = {};
@@ -1891,36 +1892,54 @@ class FSingleOverlayManager extends FBaseOverlayManager {
   }
 }
 class FMapLoader {
-  static async loadMap(mapId, mapUrl) {
+  static async loadMap(mapId, mapUrl, cupId, num) {
     if (window.isMapLoaded) {
       console.error("Map already loaded");
       return;
     }
     window.currentMapId = mapId;
     window.isMapLoaded = true;
-    const scriptUrl = FMapLoader.getUrl(mapId, mapUrl);
-    await FMapLoader.loadScript(scriptUrl);
+    const scriptUrl = FMapLoader.getUrl(mapId, mapUrl, cupId, num);
+    await FMapLoader.loadScript(scriptUrl, cupId);
   }
-  static loadScript(scriptUrl) {
+  static loadScript(scriptUrl, cupId) {
+    // console.log(dodoCup[0])
     return new Promise((resolve2) => {
       const head = document.getElementsByTagName("head")[0];
       const script = document.createElement("script");
       script.type = "text/javascript";
-      if (scriptUrl.substring(0,4) == "/map") {script.src = scriptUrl;}
+      if (scriptUrl.substring(0,4) == 'var ') {console.log("did the thing");script.innerHTML = scriptUrl;}
+      else if (scriptUrl.substring(0,4) == "/map") {script.src = scriptUrl;}
       else {script.innerHTML = scriptUrl}
       script.id = "map-script";
       script.onload = () => setTimeout(resolve2, 50);
+      console.log(script);
       head.appendChild(script);
-      if (scriptUrl.substring(0,4) != "/map"){resolve2()}
+      if (cupId != 31) {if (scriptUrl.substring(0,4) != "/map"){resolve2()}}
     });
   }
-  static getUrl(mapId, mapUrl) {
+  static getUrl(mapId, mapUrl, cupId, num) {
     if (mapUrl == null) {
         var customMap = JSON.parse(localStorage.getItem("CustomMaps"));
         for(let i in customMap){
             if(customMap[i].id == mapId){
                 return customMap[i].map;
             }
+        }
+        if (cupId == 31) {
+            fetch('../dodoCup.json')
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data[num]);
+            })
+            .catch(error => {
+                console.error('Error fetching the JSON file:', error);
+            });
         }
         return `/maps/${mapId}.js`;
     }
@@ -14731,7 +14750,12 @@ class FSingleWorld extends FBaseWorld {
   async playMap(newMainState) {
     var _a;
     this.mainState = newMainState;
-    await FMapLoader.loadMap(this.mainState.mapListing.mapId, this.mainState.mapUrl);
+    // await FMapLoader.loadMap(this.mainState.mapListing.mapId, this.mainState.mapUrl);
+    console.log(this.mainState.mapListing.mapId);
+    console.log(this.mainState.mapListing.cupId);
+    console.log(this.mainState.mapListing.num);
+    console.log(this.mainState.mapListing);
+    await FMapLoader.loadMap(this.mainState.mapListing.mapId, this.mainState.mapUrl, this.mainState.mapListing.cupId, this.mainState.mapListing.num);
     await this.onMapLoaded();
   }
   setMainState(newMainState) {
