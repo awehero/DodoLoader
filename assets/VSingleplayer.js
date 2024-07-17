@@ -1891,6 +1891,20 @@ class FSingleOverlayManager extends FBaseOverlayManager {
     this.world.returnToMenuFromGame();
   }
 }
+async function GetMap(mapId, mapUrl, cupId, num){
+    // let meshes = scene.getMeshesByTags("mesh")
+    // for(let i = 0;i < meshes.length;i++) {
+    //     meshes[i].dispose();
+    // }
+    try{document.getElementById("map-script").remove();}
+    catch{}
+    let scriptUrl = "";
+    await FMapLoader.getUrl(mapId, mapUrl, cupId, num).then(result => {
+        console.log(result);
+        scriptUrl = result;
+    });
+    await FMapLoader.loadScript(scriptUrl, cupId);
+}
 class FMapLoader {
   static async loadMap(mapId, mapUrl, cupId, num) {
     if (window.isMapLoaded) {
@@ -1899,54 +1913,58 @@ class FMapLoader {
     }
     window.currentMapId = mapId;
     window.isMapLoaded = true;
-    const scriptUrl = FMapLoader.getUrl(mapId, mapUrl, cupId, num);
-    await FMapLoader.loadScript(scriptUrl, cupId);
+    await GetMap(mapId, mapUrl, cupId, num)
   }
-  static loadScript(scriptUrl, cupId) {
-    // console.log(dodoCup[0])
+  static async loadScript(scriptUrl, cupId) {
     return new Promise((resolve2) => {
       const head = document.getElementsByTagName("head")[0];
       const script = document.createElement("script");
       script.type = "text/javascript";
-      if (scriptUrl.substring(0,4) == 'var ') {console.log("did the thing");script.innerHTML = scriptUrl;}
-      else if (scriptUrl.substring(0,4) == "/map") {script.src = scriptUrl;}
-      else {script.innerHTML = scriptUrl}
+      if (scriptUrl.substring(0,4) == "/map") {script.src = scriptUrl;}
+      else {script.innerHTML = scriptUrl;}
       script.id = "map-script";
-      script.onload = () => setTimeout(resolve2, 50);
-      console.log(script);
       head.appendChild(script);
-      if (cupId != 31) {if (scriptUrl.substring(0,4) != "/map"){resolve2()}}
+    //   cleanup.run();
+      setTimeout(resolve2, 50);
     });
   }
-  static getUrl(mapId, mapUrl, cupId, num) {
-    if (mapUrl == null) {
-        var customMap = JSON.parse(localStorage.getItem("CustomMaps"));
-        for(let i in customMap){
-            if(customMap[i].id == mapId){
-                return customMap[i].map;
-            }
-        }
-        if (cupId == 31) {
-            fetch('../dodoCup.json')
-            .then(response => {
-                if (!response.ok) {
-                throw new Error('Network response was not ok');
+    static async getUrl(mapId, mapUrl, cupId, num) {
+        // console.log(mapUrl);
+        if (mapUrl == null) {
+            // alert("was null");
+            const customMap = JSON.parse(localStorage.getItem("CustomMaps"));
+            for (let i in customMap) {
+                if (customMap[i].id === mapId) {
+                    return customMap[i].map;
                 }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data[num]);
-            })
-            .catch(error => {
-                console.error('Error fetching the JSON file:', error);
-            });
+            }
+
+            let fetchUrl = '';
+            switch (cupId) {
+                case 0:
+                    fetchUrl = '../JSON cups/newcomerCup.json';
+                    break;
+                case 31:
+                    fetchUrl = '../JSON cups/dodoCup.json';
+                    break;
+                default:
+                    return `/maps/${mapId}.js`;
+            }
+
+            const response = await fetch(fetchUrl);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log('Fetched JSON Data:', data); // Log the entire JSON data
+            return data[num];
         }
-        return `/maps/${mapId}.js`;
+
+        if (mapUrl.startsWith("http://") || mapUrl.startsWith("https://")) {
+            return mapUrl;
+        }
+        return `${window.icemaprunlink}?${LATEST_MAP_CODE_VERSION}=${mapUrl}`;
     }
-    if (mapUrl.startsWith("http://") || mapUrl.startsWith("https://"))
-        return mapUrl;
-    return `${window.icemaprunlink}?${LATEST_MAP_CODE_VERSION}=${mapUrl}`;
-  }
 }
 /*!
  * @pixi/settings - v6.5.2
@@ -14751,10 +14769,10 @@ class FSingleWorld extends FBaseWorld {
     var _a;
     this.mainState = newMainState;
     // await FMapLoader.loadMap(this.mainState.mapListing.mapId, this.mainState.mapUrl);
-    console.log(this.mainState.mapListing.mapId);
-    console.log(this.mainState.mapListing.cupId);
-    console.log(this.mainState.mapListing.num);
-    console.log(this.mainState.mapListing);
+    // console.log(this.mainState.mapListing.mapId);
+    // console.log(this.mainState.mapListing.cupId);
+    // console.log(this.mainState.mapListing.num);
+    // console.log(this.mainState.mapListing);
     await FMapLoader.loadMap(this.mainState.mapListing.mapId, this.mainState.mapUrl, this.mainState.mapListing.cupId, this.mainState.mapListing.num);
     await this.onMapLoaded();
   }

@@ -7208,32 +7208,32 @@ class CondensedMapUtils {
     switch (cupId) {
       case CupIdEnum.Newcomer:
         return [
-          { diff: 1, id: "tut1", name: "Welcome Map" },
-          { diff: 1, id: "hello_world", name: "Hello World" },
-          { diff: 1, id: "trek", name: "Trek" },
-          { diff: 1, id: "coaster", name: "Coaster" },
-          { diff: 1, id: "slow_walk", name: "Slow Walk" },
-          { diff: 2, id: "bumper", name: "Bumper" },
-          { diff: 2, id: "ice2", name: "Snowboarder" },
-          { diff: 2, id: "ez_map", name: "EZ Map" },
-          { diff: 2, id: "heights", name: "Heights" },
-          { diff: 2, id: "beach", name: "Beach" },
-          { diff: 2, id: "beardedbaby", name: "Mountain" },
-          { diff: 2, id: "boat_bounce", name: "Boat Bounce" },
-          { diff: 2, id: "jetty", name: "Jetty" },
-          { diff: 3, id: "og2", name: "Challenge" },
-          { diff: 3, id: "og35", name: "Graphics Test" },
-          { diff: 3, id: "scorpion", name: "Scorpion" },
-          { diff: 3, id: "topsy_turvy", name: "Topsy Turvy" },
-          { diff: 3, id: "speed_jump", name: "Speed Jump" },
-          { diff: 3, id: "dodo_type_beat", name: "Dodo Type Beat" },
-          { diff: 3, id: "easydrifting", name: "Easy Drifting" },
-          { diff: 4, id: "conveyor", name: "Conveyor" },
-          { diff: 4, id: "frost_factory", name: "Frost Factory" },
-          { diff: 4, id: "blink_street", name: "Blink Street" },
-          { diff: 4, id: "motor", name: "Motor" },
-          { diff: 5, id: "coneycliffs", name: "Coney Cliffs" },
-          { diff: 5, id: "spacetest", name: "Space Test" }
+          { diff: 1, id: "tut1", name: "Welcome Map", num: 0 },
+          { diff: 1, id: "hello_world", name: "Hello World", num: 1 },
+          { diff: 1, id: "trek", name: "Trek", num: 2 },
+          { diff: 1, id: "coaster", name: "Coaster", num: 3 },
+          { diff: 1, id: "slow_walk", name: "Slow Walk", num: 4 },
+          { diff: 2, id: "bumper", name: "Bumper", num: 5 },
+          { diff: 2, id: "ice2", name: "Snowboarder", num: 6 },
+          { diff: 2, id: "ez_map", name: "EZ Map", num: 7 },
+          { diff: 2, id: "heights", name: "Heights", num: 8 },
+          { diff: 2, id: "beach", name: "Beach", num: 9 },
+          { diff: 2, id: "beardedbaby", name: "Mountain", num: 10 },
+          { diff: 2, id: "boat_bounce", name: "Boat Bounce", num: 11 },
+          { diff: 2, id: "jetty", name: "Jetty", num: 12 },
+          { diff: 3, id: "og2", name: "Challenge", num: 13 },
+          { diff: 3, id: "og35", name: "Graphics Test", num: 14 },
+          { diff: 3, id: "scorpion", name: "Scorpion", num: 15 },
+          { diff: 3, id: "topsy_turvy", name: "Topsy Turvy", num: 16 },
+          { diff: 3, id: "speed_jump", name: "Speed Jump", num: 17 },
+          { diff: 3, id: "dodo_type_beat", name: "Dodo Type Beat", num: 18 },
+          { diff: 3, id: "easydrifting", name: "Easy Drifting", num: 19 },
+          { diff: 4, id: "conveyor", name: "Conveyor", num: 20 },
+          { diff: 4, id: "frost_factory", name: "Frost Factory", num: 21 },
+          { diff: 4, id: "blink_street", name: "Blink Street", num: 22 },
+          { diff: 4, id: "motor", name: "Motor", num: 23 },
+          { diff: 5, id: "coneycliffs", name: "Coney Cliffs", num: 24 },
+          { diff: 5, id: "spacetest", name: "Space Test", num: 25 }
         ];
       case CupIdEnum.Pilot:
         return [
@@ -8126,7 +8126,6 @@ class MapUtils {
         name: condensedMapListing.name,
         num: condensedMapListing.num
       });
-      console.log(condensedMapListing);
     }
     if (AddMapTocup != null) {
         if (cupId >= 36 && cupId < 36 + AddMapTocup.length) {
