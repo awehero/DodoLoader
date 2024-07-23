@@ -8135,7 +8135,7 @@ class MapUtils {
                     mapId: condensedMapListingMod.id,
                     diff: condensedMapListingMod.diff,
                     name: condensedMapListingMod.name,
-                    num: condensedMapListing.num
+                    // num: condensedMapListing.num
                 });
             }
         }
