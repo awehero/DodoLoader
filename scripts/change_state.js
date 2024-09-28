@@ -17,14 +17,14 @@ var change_state = {
 		player.rotationQuaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0,0,0),0);
 		player.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,0,0));
 		player.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0,1,0,0));
-        if (!document.getElementById("PracticeMode").checked) {
+        if (window.checkpoints.length <= 0) {
 		    player.position = new BABYLON.Vector3(map.spawn[0],map.spawn[1],map.spawn[2]);
             player.rotation = new BABYLON.Vector3(0,0,0);
         }
         else {
-            player.position = new BABYLON.Vector3(document.getElementById("PracticeX").value,document.getElementById("PracticeY").value,document.getElementById("PracticeZ").value);
+            player.position = new BABYLON.Vector3(window.checkpoints.at(-1)[0],window.checkpoints.at(-1)[1],window.checkpoints.at(-1)[2]);
             player.rotation = new BABYLON.Vector3(0,0,0);
-            rotation = parseFloat(document.getElementById("PracticeR").value);
+            rotation = parseFloat(window.checkpoints.at(-1)[3]);
         }
 		cc.refresh();
 		map.reset();

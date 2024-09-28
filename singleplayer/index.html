@@ -53,11 +53,14 @@
                 <input id="spin" type="checkbox">
                 <label>Turn Off Spin</label>
                 <br>
-                <input id="PracticeMode" type="checkbox">
-                <label>Practice Mode</label>
-                <p>Cords + Rotation(0.0-1.0)</p>
-                <input type="number" id="PracticeX" style="width:2vw"><input type="number" id="PracticeY" style="width:2vw"><input type="number" id="PracticeZ" style="width:2vw"><input type="number" id="PracticeR" style="width:2vw">
-                <br>
+                <!-- <input id="PracticeMode" type="checkbox"> -->
+                <!-- <label>Practice Mode</label> -->
+                <!-- <p>Cords + Rotation(0.0-1.0)</p>
+                <input type="number" id="PracticeX" style="width:2vw">
+                <input type="number" id="PracticeY" style="width:2vw">
+                <input type="number" id="PracticeZ" style="width:2vw">
+                <input type="number" id="PracticeR" style="width:2vw">
+                <br> -->
                 <button id="togglecheats" class="modbutton">Cheats</button>
                 <div id="cheats">
                     <input id="godmode" type="checkbox">
@@ -546,6 +549,21 @@
                 }
                 if (event.key === "I") {
                     camera.rotation.x -= .25;
+                }
+                // practice
+                if (event.key === "v") { // add point
+                    window.checkpointNum++;
+                    window.checkpoints.push([player.position.x, player.position.y, player.position.z, rotation]);
+                    let checkpoint = BABYLON.Mesh.CreatePolyhedron("checkpoint"+window.checkpointNum, {type: 12, size: 1}, scene);
+                    checkpoint.position = new BABYLON.Vector3(player.position.x, player.position.y, player.position.z);
+                    checkpoint.applyGravity = false;
+                    checkpoint.isPickable = false;
+                    BABYLON.Tags.AddTagsTo(checkpoint, "checkpoint");
+                    checkpoint.material = decorations.rgba_mat(34,139,34,0.4, true);
+                }
+                if (event.key === "b") { // remove last point
+                    window.checkpoints.pop();
+                    scene.getMeshByName("checkpoint"+window.checkpointNum).dispose();
                 }
             });
         });

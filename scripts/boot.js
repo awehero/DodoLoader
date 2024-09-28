@@ -13,6 +13,12 @@ var boot = {
         await decorations.add_particle_system();
     },
     init: async function() {
+        window.checkpoints = [];
+        window.checkpointNum = 0;
+        checkpoint = scene.getMeshesByTags("checkpoint")
+        for(var i of checkpoint) {
+            i.dispose();
+        }
         await fov.init();
         await flyjump.init();
         const mapScript = document.querySelector('#map-script').innerHTML;
