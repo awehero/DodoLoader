@@ -29,6 +29,7 @@ var boot = {
         await change_state.spawn();
         // await premium.updatePremiumRequirementMet();
         await map.post();
+        window.ogdistance = Math.sqrt((Math.abs(player.position.x-window.end.position.x)^2)+(Math.abs(player.position.z-window.end.position.z)^2))-2;
     }
 }
 

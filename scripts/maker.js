@@ -202,6 +202,7 @@ var maker = {
         ending.position = new BABYLON.Vector3(pX, pY, pZ);
         // Visuals
         ending.material = decorations.materials.ending;
+        window.end = ending;
         ending.freezeWorldMatrix();
         // Physics
         endings.push(ending);

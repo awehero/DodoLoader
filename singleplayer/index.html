@@ -116,6 +116,14 @@
                         <div class="down"><button id="Cdown" class="dodocontrolButton">Down</button></div>
                     </div>
                 </div>
+                <input id="AutoCheckpoint" type="checkbox">
+                <label>Auto Checkpoint</label>
+                <p>Checkpoint Shape</p>
+                <select id="CheckpointShape">
+                    <option value=12>Diamond</option>
+                    <option value="cube">Cube</option>
+                    <option value="sphere">Sphere</option>
+                </select>
             </div>
         </div>
     </div>
@@ -163,6 +171,10 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div style="position:absolute;background-color: #272727;color:white;top:0;left:26vw;border:1px #3b3b3b solid;border-radius: 5px;" id="levelPercent">
+        <label for="progress" id="progressPercent">Level Progress: Null</label>
+        <progress id="progress" value=".5" max="100" style="width:40vw;"></progress>
     </div>
 
     <script type="text/javascript" src="/scripts/decorations.js?v=0.179"></script>
@@ -552,20 +564,40 @@
                 }
                 // practice
                 if (event.key === "v") { // add point
-                    window.checkpointNum++;
-                    window.checkpoints.push([player.position.x, player.position.y, player.position.z, rotation]);
-                    let checkpoint = BABYLON.Mesh.CreatePolyhedron("checkpoint"+window.checkpointNum, {type: 12, size: 1}, scene);
-                    checkpoint.position = new BABYLON.Vector3(player.position.x, player.position.y, player.position.z);
-                    checkpoint.applyGravity = false;
-                    checkpoint.isPickable = false;
-                    BABYLON.Tags.AddTagsTo(checkpoint, "checkpoint");
-                    checkpoint.material = decorations.rgba_mat(34,139,34,0.4, true);
+                    NewCheckpoint()
                 }
                 if (event.key === "b") { // remove last point
                     window.checkpoints.pop();
                     scene.getMeshByName("checkpoint"+window.checkpointNum).dispose();
                 }
             });
+            function NewCheckpoint() {
+                window.checkpointNum++;
+                window.checkpoints.push([player.position.x, player.position.y, player.position.z, rotation]);
+                let checkpoint;
+                if ($("#CheckpointShape").val() == "sphere"){checkpoint = BABYLON.Mesh.CreateSphere("checkpoint"+window.checkpointNum, 10, 1, scene);}
+                else if ($("#CheckpointShape").val() == "cube"){checkpoint = BABYLON.MeshBuilder.CreateBox("checkpoint"+window.checkpointNum, options={size:0.5}, scene);}
+                else {checkpoint = BABYLON.Mesh.CreatePolyhedron("checkpoint"+window.checkpointNum, {type: parseInt($("#CheckpointShape").val()), size: 0.75}, scene);}
+                checkpoint.position = new BABYLON.Vector3(player.position.x, player.position.y+.5, player.position.z);
+                checkpoint.rotation = new BABYLON.Vector3(0, rotation, 0);
+                checkpoint.applyGravity = false;
+                checkpoint.isPickable = false;
+                BABYLON.Tags.AddTagsTo(checkpoint, "checkpoint");
+                checkpoint.material = decorations.rgba_mat(34,139,34,0.4, true);
+            }
+            let progressChecker = setInterval(function() {
+                if (isMapLoaded && alive) {
+                    let distance = Math.sqrt((Math.abs(player.position.x-window.end.position.x)^2)+(Math.abs(player.position.z-window.end.position.z)^2))-2
+                    // console.log(Math.abs(1-distance/window.ogdistance).toFixed(2))
+                    $("#progressPercent").text("Level Progress: "+(Math.abs(1-distance/window.ogdistance).toFixed(2)*100).toFixed(0)+"%");
+                    $("#progress").val((Math.abs(1-distance/window.ogdistance).toFixed(2)*100).toFixed(0));
+                }
+            }, 100);
+            let AutoCheckpoint = setInterval(function(){
+                if (isMapLoaded && $("#AutoCheckpoint").is(":checked") && alive) {
+                    NewCheckpoint();
+                }
+            }, 2000)
         });
     </script>
 
