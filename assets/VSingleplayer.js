@@ -1925,7 +1925,7 @@ class FMapLoader {
       script.id = "map-script";
       head.appendChild(script);
     //   cleanup.run();
-      setTimeout(resolve2, 50);
+      setTimeout(resolve2, 500);
     });
   }
     static async getUrl(mapId, mapUrl, cupId, num) {
