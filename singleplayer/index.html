@@ -28,8 +28,8 @@
         input[type=text] {
             width:2vw;
         } 
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none; 
             margin: 0; 
         }
@@ -83,6 +83,9 @@
                         <input type="range" min="0" max="1" id="speed" step=".02">
                         <p style="display:block;margin:0;" id="speedindicator">0.28</p>
                     </div>
+                    <!-- <input id="steerControl" type="input"> -->
+                    <label for="steerControl">Steer Adjust (1 default)</label>
+                    <input type="range" min="0.1" max="5" id="steerControl" step=".1">
                     <botton class="button" onclick="window.tsTriggers.onWin()">Instant Win</botton>
                 </div>
                 <button id="toggledodocontrols" class="modbutton">Dodo Cinematics</button>
@@ -124,6 +127,16 @@
                     <option value="cube">Cube</option>
                     <option value="sphere">Sphere</option>
                 </select>
+                <button id="togglechallages" class="modbutton">Dodo Challanges</button>
+                <div id="challangeMenu">
+                    <input type="checkbox" id="fog">
+                    <label for="fog">Fog</label>
+                    <br>
+                    <input type="checkbox" id="invis">
+                    <label for="invis">Invisibility</label>
+                </div>
+                <br>
+                <button class="button" id="resetlevel">Reset Level</button>
             </div>
         </div>
     </div>
@@ -189,6 +202,7 @@
             $("#gravitytoggle").hide();
             $("#speedtoggle").hide();
             $("#dodocontrols").hide();
+            $("#challangeMenu").hide();
 
             $("#testbutton").click(function() {
                 sphere = BABYLON.MeshBuilder.CreateIcoSphere("icosphere", options = {radius: 3, subdivisions: 4}, scene);
@@ -292,7 +306,7 @@
                 BABYLON.Tags.AddTagsTo(cylinder, "mesh");
                 cylinder.physicsImpostor = new BABYLON.PhysicsImpostor(cylinder, BABYLON.PhysicsImpostor.CylinderImpostor, { mass: 0, restitution: 0, friction: 0.6}, scene)
                 cylinder.material = mat;
-                
+
                 cylindernum++
                 GetAllObjects()
             })
@@ -482,6 +496,9 @@
             $("#speedoverwrite").click(function () {
                 $("#speedtoggle").toggle();
             });
+            $("#togglechallages").click(function () {
+                $("#challangeMenu").toggle();
+            });
 
             $("#gravity").on("input", function() {
                 $("#gravityindicator").text($(this).val());
@@ -599,6 +616,53 @@
                 }
             }, 2000)
         });
+        $("#resetlevel").click(function() {
+            removeMap(currentMapId);
+            window.location.reload();
+        })
+        function removeMap(mapId) {
+            let completedMaps = JSON.parse(localStorage.getItem("completedMaps")) || [];
+            completedMaps = completedMaps.filter(map => map.mapId !== mapId);
+            localStorage.setItem("completedMaps", JSON.stringify(completedMaps));
+        }
+        $("#steerControl").val(1)
+        window.steerControl = 1;
+        $("#steerControl").on("input", function() {
+            window.steerControl = parseFloat($(this).val());
+        });
+        function makeFog() {
+            // close layer
+            let fog = BABYLON.MeshBuilder.CreateSphere("fog", options={diameter:20}, scene);
+            BABYLON.Tags.AddTagsTo(fog, "fog");
+            fog.material = decorations.rgba_mat(100, 100, 100, 0.85);
+            // far layer
+            let fog2 = BABYLON.MeshBuilder.CreateSphere("fog2", options={diameter:35}, scene);
+            BABYLON.Tags.AddTagsTo(fog2, "fog");
+            fog2.material = decorations.rgba_mat(100, 100, 100, 0.99);
+        }
+        $("#fog").on("input", function() {
+            if ($("#fog").is(":checked")) {
+                makeFog();
+            } else {
+                scene.getMeshByName("fog").dispose();
+                scene.getMeshByName("fog2").dispose();
+            }
+        });
+        window.psupdateSpeed = 0.02;
+        $("#invis").on("input", function() {
+            if ($("#invis").is(":checked")) {
+                player.visibility = 0;
+                window.psupdateSpeed = 0.0001;
+                window.ps.dispose();
+                decorations.add_particle_system();
+            } else {
+                player.visibility = 1;
+                window.psupdateSpeed = 0.02
+                window.ps.dispose();
+                decorations.add_particle_system();
+            }
+        });
+
     </script>
 
     <script type="text/javascript" src="/libraries/babylon.js"></script>

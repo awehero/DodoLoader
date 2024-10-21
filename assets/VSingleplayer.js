@@ -1709,6 +1709,7 @@ class FDriftManager {
     return Math.ceil(value);
   }
 }
+let steerControl = 1;
 class FMoveManager {
   constructor(world, playerManager) {
     __publicField(this, "world");
@@ -1717,7 +1718,7 @@ class FMoveManager {
     this.playerManager = playerManager;
   }
   getRotationAdjustment() {
-    return window.steer * FBasePlayerManager.getSteeringDirection();
+    return window.steer * FBasePlayerManager.getSteeringDirection() * window.steerControl;
   }
   getPositionAdjustment() {
     return {

@@ -150,35 +150,37 @@ var decorations = {
         return customMat;
     },
     add_particle_system: function () {
-        let ps = new BABYLON.ParticleSystem("particles", 2000, scene);
+        window.window.ps = new BABYLON.ParticleSystem("particles", 2000, scene);
         //Texture of each particle//textures/flare
-        ps.particleTexture = new BABYLON.Texture("assets/textures/flare.png", scene);
+        window.ps.particleTexture = new BABYLON.Texture("assets/textures/flare.png", scene);
         // Where the particles come from
-        ps.emitter = player; // the starting object, the emitter
-        ps.minEmitBox = new BABYLON.Vector3(-0.2, 0, 0); // Starting all from
-        ps.maxEmitBox = new BABYLON.Vector3(0.2, 0, 0); // To...
+        window.ps.emitter = player; // the starting object, the emitter
+        window.ps.minEmitBox = new BABYLON.Vector3(-0.2, 0, 0); // Starting all from
+        window.ps.maxEmitBox = new BABYLON.Vector3(0.2, 0, 0); // To...
         // Colors of all particles
-        ps.color1 = new BABYLON.Color4(0.4, 0.4, 1.0, 1.0);
-        ps.color2 = new BABYLON.Color4(0.9, 0.5, 0.4, 1.0);
-        ps.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.8);
+        window.ps.color1 = new BABYLON.Color4(0.4, 0.4, 1.0, 1.0);
+        window.ps.color2 = new BABYLON.Color4(0.9, 0.5, 0.4, 1.0);
+        window.ps.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.8);
         // Size of each particle (random between...
-        ps.minSize = (IS_ICEPARTY) ? 0.3 : 0.15;
-        ps.maxSize = (IS_ICEPARTY) ? 0.7 : 0.4;
+        window.ps.minSize = (IS_ICEPARTY) ? 0.3 : 0.15;
+        window.ps.maxSize = (IS_ICEPARTY) ? 0.7 : 0.4;
         // Life time of each particle (random between...
-        ps.minLifeTime = 0.3;
-        ps.maxLifeTime = 0.4;
+        window.ps.minLifeTime = 0.3;
+        window.ps.maxLifeTime = 0.4;
         // Emission rate
-        ps.emitRate = (IS_ICEPARTY) ? 10 : 100;
+        window.ps.emitRate = (IS_ICEPARTY) ? 10 : 100;
         // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
-        ps.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+        window.ps.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
         // Direction of each particle after it has been emitted
-        ps.direction1 = new BABYLON.Vector3(-1, 1, 1);
-        ps.direction2 = new BABYLON.Vector3(1, 1, -1);
+        window.ps.direction1 = new BABYLON.Vector3(-1, 1, 1);
+        window.ps.direction2 = new BABYLON.Vector3(1, 1, -1);
         // Speed
-        ps.minEmitPower = 1;
-        ps.maxEmitPower = 3;
-        ps.updateSpeed = 0.02; // 0.005
-        ps.start();
+        window.ps.minEmitPower = 1;
+        window.ps.maxEmitPower = 3;
+        window.ps.updateSpeed = window.psupdateSpeed;
+        // window.ps.updateSpeed = 0.02; // 0.005
+        // ps.updateSpeed = 0.001; for invis
+        window.ps.start();
     },
     addOrRemoveSkybox: function() {
         const isSkyboxEnabled = (settings.skyboxEnabled == "on")

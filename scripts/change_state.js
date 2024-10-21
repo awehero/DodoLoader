@@ -7,6 +7,8 @@ var change_state = {
 		window.tsTriggers.onDeath(deathMessage);
 	},
 	spawn: function() {
+        window.ps.dispose();
+        decorations.add_particle_system();
 		alive = true;
 		score = 0;
 		flyjump.last_frame = 0;
@@ -28,6 +30,7 @@ var change_state = {
         }
 		cc.refresh();
 		map.reset();
+
 	}, 
 	win: function() {
 		if (!alive) return

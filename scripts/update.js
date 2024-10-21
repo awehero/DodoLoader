@@ -39,6 +39,10 @@ var update = {
 				flyjump.compute_loop();
 				this.update_overlay();
 			}
+            if (document.getElementById("fog").checked) {
+                scene.getMeshByName("fog").position = player.position;
+                scene.getMeshByName("fog2").position = player.position;
+            }
 		} catch(err) {
 			console.log(err);
 		}
