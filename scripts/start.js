@@ -58,7 +58,8 @@ var start = {
         // scene.ambientColor = new BABYLON.Color4(225,225,225,0);
 
 		// camera
-		camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 2, 10), scene);
+		// camera = new BABYLON.FreeCamera("camera", new BABYLON.Vector3(0, 2, 10), scene);
+        camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(0, 2, 10), scene);
 		camera.setTarget(BABYLON.Vector3.Zero());
 		camera.rotation.y = -3.14;
 		camera.rotation.x = 0.3;

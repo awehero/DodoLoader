@@ -1,6 +1,4 @@
 /* eslint-disable */
-
-
 var update = {
 	loop: function() {
 		if (!isMapLoaded) return
@@ -109,7 +107,22 @@ var update = {
             camera.rotation.x = cam_depression;
         }
         else if (follow.checked) {
-            camera.setTarget(player.position)
+            const lerp = (start, end, t) => start * (1 - t) + end * t;
+            const targetY = player.position.y + window.followHeight;
+            const baseSmoothingFactor = 0.05; // Base smoothing factor
+
+            camera.setTarget(player.position);
+
+            const distanceX = Math.abs(player.position.x - camera.position.x);
+            const distanceZ = Math.abs(player.position.z - camera.position.z);
+
+            // Adjust smoothing factor based on distance
+            const smoothingFactorX = baseSmoothingFactor * Math.min(distanceX / window.followDistance, 1);
+            const smoothingFactorZ = baseSmoothingFactor * Math.min(distanceZ / window.followDistance, 1);
+
+            camera.position.x = lerp(camera.position.x, player.position.x, smoothingFactorX);
+            camera.position.z = lerp(camera.position.z, player.position.z, smoothingFactorZ);
+            camera.position.y = lerp(camera.position.y, targetY, baseSmoothingFactor);
         }
 		light.position = camera.position;
 	},

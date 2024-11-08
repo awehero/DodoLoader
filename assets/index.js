@@ -7018,6 +7018,7 @@ class CupUtils {
         return JSON.parse(localStorage.getItem("CupImages"))[cupId-36];
     }
     else {
+        // console.log(CupIdEnum[cupId].toLowerCase())
         return `/assets/skins/${CupIdEnum[cupId].toLowerCase()}.png`;
     }
   }

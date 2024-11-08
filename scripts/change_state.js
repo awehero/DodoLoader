@@ -10,7 +10,9 @@ var change_state = {
         window.ps.dispose();
         decorations.add_particle_system();
 		alive = true;
-		score = 0;
+        if (window.checkpoints.length == 0) {
+            score = 0;
+        }
 		flyjump.last_frame = 0;
         rotation = 0
 		// rotation = document.getElementById("PracticeR").value;
@@ -30,6 +32,15 @@ var change_state = {
         }
 		cc.refresh();
 		map.reset();
+        if (document.getElementById("spawnX").value != "") {player.position.x = parseFloat(document.getElementById("spawnX").value);}
+        if (document.getElementById("spawnY").value != "") {player.position.y = parseFloat(document.getElementById("spawnY").value);}
+        if (document.getElementById("spawnZ").value != "") {player.position.z = parseFloat(document.getElementById("spawnZ").value);}
+        // if (document.getElementById("spawnR").value != "") {let angleDegrees = parseFloat(document.getElementById("spawnR").value);let angleRadians = angleDegrees * (Math.PI / 180);rotation = angleRadians / 60;}
+        if (document.getElementById("spawnR").value != "") {rotation = parseFloat(document.getElementById("spawnR").value);}
+
+        if (document.getElementById("follow").checked == true) {
+            camera.position = new BABYLON.Vector3(map.spawn[0],player.position.y+window.followHeight,player.position.z+window.followDistance);
+        }
 
 	}, 
 	win: function() {

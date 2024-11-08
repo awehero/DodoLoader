@@ -86,6 +86,13 @@
                     <!-- <input id="steerControl" type="input"> -->
                     <label for="steerControl">Steer Adjust (1 default)</label>
                     <input type="range" min="0.1" max="5" id="steerControl" step=".1">
+                    <br><label id="steerindicator">Steer Speed (1 default)</label>
+                    <br>
+                    <input style="display: inline-block;width:1vw" type="number" id="spawnX"><label for="spawnX">Spawn X</label><br>
+                    <input style="display: inline-block;width:1vw" type="number" id="spawnY"><label for="spawnY">Spawn Y</label><br>
+                    <input style="display: inline-block;width:1vw" type="number" id="spawnZ"><label for="spawnZ">Spawn Z</label><br>
+                    <input style="display: inline-block;width:1vw" type="number" id="spawnR"><label for="spawnR">Spawn R</label>
+                    <br>
                     <botton class="button" onclick="window.tsTriggers.onWin()">Instant Win</botton>
                 </div>
                 <button id="toggledodocontrols" class="modbutton">Dodo Cinematics</button>
@@ -99,8 +106,18 @@
                     <br >
                     <input id="follow" type="checkbox" >
                     <label >Follow Player</label>
+                    <div id="followtoggle">
+                        <input type="range" min=".5" max="150" id="followdistance" step=".5">
+                        <p style="display:block;margin:0;" id="followindicator">Max distance.5</p>
+
+                        <input type="range" min="2.5" max="25" id="followheight" step=".1">
+                        <p style="display:block;margin:0;" id="followheightindicator">Max height: 2</p>
+
+                        <input type="range" min="1" max="15" id="followspeed" step=".5">
+                        <p style="display:block;margin:0;" id="followspeedindicator">Follow speed: 1</p>
+                    </div>
                     <br >
-                    <p style="margin: 0;">Movement</p>
+                    <!-- <p style="margin: 0;">Movement</p>
                     <div class="container">
                         <div class="home"><button id="home" class="dodocontrolButton">Home</button></div>
                         <div class="up"><button id="up" class="dodocontrolButton">Up</button></div>
@@ -117,7 +134,7 @@
                         <div class="left"><button id="Cleft" class="dodocontrolButton">Left</button></div>
                         <div class="right"><button id="Cright" class="dodocontrolButton">Right</button></div>
                         <div class="down"><button id="Cdown" class="dodocontrolButton">Down</button></div>
-                    </div>
+                    </div> -->
                 </div>
                 <input id="AutoCheckpoint" type="checkbox">
                 <label>Auto Checkpoint</label>
@@ -201,6 +218,7 @@
             $("#cheats").hide();
             $("#gravitytoggle").hide();
             $("#speedtoggle").hide();
+            $("#followtoggle").hide();
             $("#dodocontrols").hide();
             $("#challangeMenu").hide();
 
@@ -341,8 +359,8 @@
             let MapInit = '';
             function Distance3D(x1, y1, z1, x2, y2, z2) {
                 return Math.sqrt(
-                    Math.abs(Math.pow(x2 - x1, 2)) + 
-                    Math.abs(Math.pow(y2 - y1, 2)) + 
+                    Math.abs(Math.pow(x2 - x1, 2)) +
+                    Math.abs(Math.pow(y2 - y1, 2)) +
                     Math.abs(Math.pow(z2 - z1, 2))
                 );
             }
@@ -466,7 +484,14 @@
             $('#PracticeR').val('0');
             $('#gravity').val('-9');
             $('#speed').val('0.28');
+            $("#followdistance").val('0.5');
+            $("#followheight").val('2.5');
+            $("#followspeed").val('1');
             $("#speedindicator").text($("#speed").val());
+            $("#followindicator").text("Max distance"+$("#followdistance").val());
+            $("#followheightindicator").text("Max height: "+$("#followheight").val());
+            $("#followspeedindicator").text("Follow speed: "+$("#followspeed").val());
+
             $("#gravityindicator").text($("#gravity").val());
 
             $("#togglemenu").click(function () {
@@ -499,12 +524,31 @@
             $("#togglechallages").click(function () {
                 $("#challangeMenu").toggle();
             });
+            $("#follow").on("input", function() {
+                $("#followtoggle").toggle();
+                $("#freecam").prop("checked", true);
+            });
 
             $("#gravity").on("input", function() {
                 $("#gravityindicator").text($(this).val());
             });
             $("#speed").on("input", function() {
                 $("#speedindicator").text($(this).val());
+            });
+            window.followDistance = 0.5;
+            $("#followdistance").on("input", function() {
+                $("#followindicator").text($(this).val());
+                window.followDistance = parseFloat($(this).val());
+            });
+            window.followHeight = 2;
+            $("#followheight").on("input", function() {
+                $("#followheightindicator").text("keep height: "+$(this).val());
+                window.followHeight = parseFloat($(this).val());
+            });
+            window.followSpeed = 1;
+            $("#followspeed").on("input", function() {
+                $("#followspeedindicator").text("Follow speed: "+$(this).val());
+                window.followSpeed = parseFloat($(this).val());
             });
 
             $("#home").click(function () {
@@ -629,6 +673,7 @@
         window.steerControl = 1;
         $("#steerControl").on("input", function() {
             window.steerControl = parseFloat($(this).val());
+            $("#steerindicator").text("Steer Control: "+$(this).val());
         });
         function makeFog() {
             // close layer

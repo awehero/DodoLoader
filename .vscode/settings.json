@@ -9,5 +9,6 @@
     },
     "hide-files.files": [
         ".vscode"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }
