@@ -40,6 +40,16 @@ var change_state = {
 
         if (document.getElementById("follow").checked == true) {
             camera.position = new BABYLON.Vector3(map.spawn[0],player.position.y+window.followHeight,player.position.z+window.followDistance);
+            switch (document.getElementById("FollowStart").value){
+                case "c":
+                    break;
+                case "r":
+                    camera.position.x -= window.followDistance/3;
+                    break;
+                case "l":
+                    camera.position.x += window.followDistance/3;
+                    break;
+            }
         }
 
 	}, 

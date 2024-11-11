@@ -1925,8 +1925,8 @@ class FMapLoader {
       else {script.innerHTML = scriptUrl;}
       script.id = "map-script";
       head.appendChild(script);
-    //   cleanup.run();
       setTimeout(resolve2, 500);
+    //   cleanup.run();
     });
   }
     static async getUrl(mapId, mapUrl, cupId, num) {
