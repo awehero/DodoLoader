@@ -6655,7 +6655,7 @@ function getRoutes() {
     },
     {
       path: RouteEnum.Singleplayer,
-      component: () => __vitePreload(() => import("https://awehero.github.io/DodoLoader/assets/VSingleplayer.js"), true ? ["https://awehero.github.io/DodoLoader/assets/VSingleplayer.js","https://awehero.github.io/DodoLoader/assets/VSingleplayer.css"] : void 0)
+      component: () => __vitePreload(() => import("/assets/VSingleplayer.js"), true ? ["/assets/VSingleplayer.js","/assets/VSingleplayer.css"] : void 0)
     }
   ];
   return websiteAndExtensionRoutes;
