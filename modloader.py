@@ -13,7 +13,7 @@ if answer.lower() == "y":
             except ValueError:
                 print(f"Marker not found, did you delete it even though I said not to?.")
                 return
-        with open("./assets/index.js", 'w') as file:
+        with open("https://awehero.github.io/DodoLoader/assets/index.js", 'w') as file:
             file.writelines(lines[index:])
     eraseLastModded()
 
@@ -35,7 +35,7 @@ if answer.lower() == "y":
             sys.exit("Something went wrong")
 
     # .icedodo compiler
-    with open("./modloader.icedodo", 'r') as file:
+    with open("https://awehero.github.io/DodoLoader/modloader.icedodo", 'r') as file:
         compiled = ""
         compiledGame = ""
         Addcup = []
@@ -62,13 +62,13 @@ if answer.lower() == "y":
         # print(compiled)
 
     # load mods:
-    prepend_line("./assets/index.js", "\n")
-    prepend_line("./assets/index.js", compiled)
-    prepend_line("./assets/index.js", "//modloader auto generated")
+    prepend_line("https://awehero.github.io/DodoLoader/assets/index.js", "\n")
+    prepend_line("https://awehero.github.io/DodoLoader/assets/index.js", compiled)
+    prepend_line("https://awehero.github.io/DodoLoader/assets/index.js", "//modloader auto generated")
 
-    prepend_line("./assets/Vsingleplayer.js", "\n")
-    prepend_line("./Vsingleplayer/index.js", compiled)
-    prepend_line("./Vsingleplayer/index.js", "//modloader auto generated")
+    prepend_line("https://awehero.github.io/DodoLoader/assets/Vsingleplayer.js", "\n")
+    prepend_line("https://awehero.github.io/DodoLoader/Vsingleplayer/index.js", compiled)
+    prepend_line("https://awehero.github.io/DodoLoader/Vsingleplayer/index.js", "//modloader auto generated")
 if answer.lower() == "n" or answer.lower() == "y":
     # run the game
     port = 8000
