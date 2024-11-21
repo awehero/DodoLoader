@@ -6655,7 +6655,7 @@ function getRoutes() {
     },
     {
       path: RouteEnum.Singleplayer,
-      component: () => __vitePreload(() => import("./VSingleplayer.js"), true ? ["assets/VSingleplayer.js","assets/VSingleplayer.css"] : void 0)
+      component: () => __vitePreload(() => import("https://awehero.github.io/DodoLoader/assets/VSingleplayer.js"), true ? ["https://awehero.github.io/DodoLoader/assets/VSingleplayer.js","https://awehero.github.io/DodoLoader/assets/VSingleplayer.css"] : void 0)
     }
   ];
   return websiteAndExtensionRoutes;
@@ -6986,18 +6986,18 @@ var SkinIdEnum = /* @__PURE__ */ ((SkinIdEnum2) => {
 const ALL_SKIN_IDS = MiscUtils.getNumberEnumKeys(SkinIdEnum);
 // init music
 var SoundFileEnum = /* @__PURE__ */ ((SoundFileEnum2) => {
-  SoundFileEnum2["Bloom"] = "music/bloom.mp3";
-  SoundFileEnum2["Brink"] = "music/brink.mp3";
-  SoundFileEnum2["Dodosynthesis"] = "music/dodosynthesis.mp3";
-  SoundFileEnum2["Dodozart_by_insolence"] = "music/dodozart_by_insolence.mp3";
-  SoundFileEnum2["Microburst"] = "music/microburst.mp3";
-  SoundFileEnum2["Stairways"] = "music/stairways.mp3";
-  SoundFileEnum2["Tokyo"] = "music/tokyo.mp3";
-  SoundFileEnum2["Valkyrie"] = "music/valkyrie.mp3";
-  SoundFileEnum2["Uprise"] = "music/uprise.mp3";
-  SoundFileEnum2["Death"] = "sounds/death.wav";
-  SoundFileEnum2["LevelComplete"] = "sounds/level_complete.wav";
-  SoundFileEnum2["Click"] = "sounds/click.wav";
+  SoundFileEnum2["Bloom"] = "https://awehero.github.io/DodoLoader/music/bloom.mp3";
+  SoundFileEnum2["Brink"] = "https://awehero.github.io/DodoLoader/music/brink.mp3";
+  SoundFileEnum2["Dodosynthesis"] = "https://awehero.github.io/DodoLoader/music/dodosynthesis.mp3";
+  SoundFileEnum2["Dodozart_by_insolence"] = "https://awehero.github.io/DodoLoader/music/dodozart_by_insolence.mp3";
+  SoundFileEnum2["Microburst"] = "https://awehero.github.io/DodoLoader/music/microburst.mp3";
+  SoundFileEnum2["Stairways"] = "https://awehero.github.io/DodoLoader/music/stairways.mp3";
+  SoundFileEnum2["Tokyo"] = "https://awehero.github.io/DodoLoader/music/tokyo.mp3";
+  SoundFileEnum2["Valkyrie"] = "https://awehero.github.io/DodoLoader/music/valkyrie.mp3";
+  SoundFileEnum2["Uprise"] = "https://awehero.github.io/DodoLoader/music/uprise.mp3";
+  SoundFileEnum2["Death"] = "https://awehero.github.io/DodoLoader/sounds/death.wav";
+  SoundFileEnum2["LevelComplete"] = "https://awehero.github.io/DodoLoader/sounds/level_complete.wav";
+  SoundFileEnum2["Click"] = "https://awehero.github.io/DodoLoader/sounds/click.wav";
   return SoundFileEnum2;
 })(SoundFileEnum || {});
 const ALL_SOUND_FILE_PATHS = MiscUtils.getStringEnumValues(SoundFileEnum);
