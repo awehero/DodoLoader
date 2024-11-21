@@ -6655,7 +6655,7 @@ function getRoutes() {
     },
     {
       path: RouteEnum.Singleplayer,
-      component: () => __vitePreload(() => import("./DodoLoader/assets/VSingleplayer.js"), true ? ["DodoLoader/assets/VSingleplayer.js","DodoLoader/assets/VSingleplayer.css"] : void 0)
+      component: () => __vitePreload(() => import("./DodoLoader/assets/VSingleplayer.js"), true ? ["assets/VSingleplayer.js","DodoLoader/assets/VSingleplayer.css"] : void 0)
     }
   ];
   return websiteAndExtensionRoutes;
