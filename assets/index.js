@@ -7028,7 +7028,7 @@ class CupUtils {
     }
     else {
         // console.log(CupIdEnum[cupId].toLowerCase())
-        return `/assets/skins/${CupIdEnum[cupId].toLowerCase()}.png`;
+        return `/DodoLoader/assets/skins/${CupIdEnum[cupId].toLowerCase()}.png`;
     }
   }
   static isOnlyOnWebsite(cupId, isExtension) {
