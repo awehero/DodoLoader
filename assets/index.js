@@ -6658,7 +6658,7 @@ function getRoutes() {
       component: () =>
         __vitePreload(
           () =>
-            import("https://awehero.github.io/DodoLoader/assets/VSingleplayer.js"),
+            import("DodoLoader/assets/VSingleplayer.js"),
           true
             ? [
                 "https://awehero.github.io/DodoLoader/assets/VSingleplayer.js",
