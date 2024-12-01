@@ -6660,8 +6660,8 @@ function getRoutes() {
               () => 
                   import("./VSingleplayer.js"), 
               true ? [
-                  "assets/VSingleplayer.js",
-                  "assets/VSingleplayer.css"
+                  "DodoLoader/assets/VSingleplayer.js",
+                  "DodoLoader/assets/VSingleplayer.css"
               ] 
               : void 0
           )
