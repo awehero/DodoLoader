@@ -6650,22 +6650,21 @@ const VBoot = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], [
 function getRoutes() {
   const websiteAndExtensionRoutes = [
     {
-      path: "/",
+      path: "/DodoLoader/",
       component: VBoot
     },
     {
       path: RouteEnum.Singleplayer,
-      component: () =>
-        __vitePreload(
-          () =>
-            import("DodoLoader/assets/VSingleplayer.js"),
-          true
-            ? [
-                "https://awehero.github.io/DodoLoader/assets/VSingleplayer.js",
-                "https://awehero.github.io/DodoLoader/assets/VSingleplayer.css"
-              ]
-            : void 0
-        )
+      component: () => 
+          __vitePreload(
+              () => 
+                  import("./VSingleplayer.js"), 
+              true ? [
+                  "assets/VSingleplayer.js",
+                  "assets/VSingleplayer.css"
+              ] 
+              : void 0
+          )
     }
   ];
   return websiteAndExtensionRoutes;
