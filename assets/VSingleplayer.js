@@ -1949,7 +1949,7 @@ class FMapLoader {
                     fetchUrl = '../JSON cups/dodoCup.json';
                     break;
                 default:
-                    return `/maps/${mapId}.js`;
+                    return `/DodoLoader/maps/${mapId}.js`;
             }
 
             const response = await fetch(fetchUrl);
