@@ -1943,13 +1943,13 @@ class FMapLoader {
             let fetchUrl = '';
             switch (cupId) {
                 case 0:
-                    fetchUrl = '../JSON cups/newcomerCup.json';
+                    fetchUrl = 'https://awehero.github.io/DodoLoader/JSON cups/newcomerCup.json';
                     break;
                 case 31:
-                    fetchUrl = '../JSON cups/dodoCup.json';
+                    fetchUrl = 'https://awehero.github.io/DodoLoader/JSON cups/dodoCup.json';
                     break;
                 default:
-                    return `/DodoLoader/maps/${mapId}.js`;
+                    return `https://awehero.github.io/DodoLoader/maps/${mapId}.js`;
             }
 
             const response = await fetch(fetchUrl);
