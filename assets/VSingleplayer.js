@@ -1921,7 +1921,7 @@ class FMapLoader {
       const head = document.getElementsByTagName("head")[0];
       const script = document.createElement("script");
       script.type = "text/javascript";
-      if (scriptUrl.substring(0,4) == "/map") {script.src = scriptUrl;}
+      if (scriptUrl.substring(36,40) == "/map") {script.src = scriptUrl;}
       else {script.innerHTML = scriptUrl;}
       script.id = "map-script";
       head.appendChild(script);
