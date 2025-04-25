@@ -118,11 +118,37 @@
 
                         <input type="range" min="2.5" max="25" id="followheight" step=".1">
                         <p style="display:block;margin:0;" id="followheightindicator">Max height: 2</p>
+                        <p>Start Position</p>
+                        <select id="FollowStart">
+                            <option value="c">Center</option>
+                            <option value="l">Left</option>
+                            <option value="r">Right</option>
+                        </select>
+                    </div>
+                    <br >
+                </div>
+              
+                <button id="toggletascontrols" class="modbutton">TAS Tool</button>
+                <div id="tastool">
+                    <input id="tas1" type="checkbox">
+                    <label>FreeCam</label>
+                    <br>
+                    <input id="tas2" type="checkbox" >
+                    <label >Freeze Dodo</label>
+                    <br >
+                    <input id="tas3" type="checkbox" >
+                    <label >Follow Player</label>
+                    <div id="tas4">
+                        <input type="range" min=".5" max="150" id="tas5" step=".5">
+                        <p style="display:block;margin:0;" id="followindicator">Max distance.5</p>
+
+                        <input type="range" min="2.5" max="25" id="tas6" step=".1">
+                        <p style="display:block;margin:0;" id="tas7">Max height: 2</p>
 <!--
                         <input type="range" min="1" max="15" id="followspeed" step=".5">
                         <p style="display:block;margin:0;" id="followspeedindicator">Follow speed: 1</p> -->
                         <p>Start Position</p>
-                        <select id="FollowStart">
+                        <select id="tas8">
                             <option value="c">Center</option>
                             <option value="l">Left</option>
                             <option value="r">Right</option>
@@ -148,6 +174,7 @@
                         <div class="down"><button id="Cdown" class="dodocontrolButton">Down</button></div>
                     </div> -->
                 </div>
+              
                 <input id="AutoCheckpoint" type="checkbox">
                 <label>Auto Checkpoint</label>
                 <p>Checkpoint Shape</p>
