@@ -89,12 +89,17 @@ var update = {
 				window.change_state.die("No TAS file loaded!");
 			} else {
 				camera.position.x = player.position.x;
-	            camera.position.z = player.position.z;
-	            camera.position.y = player.position.y + 0.25;
-	
-	            camera.rotation = player.rotation;
-	            camera.rotation.x += Math.PI;
-	            camera.position.y += 0.25;
+				camera.position.z = player.position.z;
+				camera.position.y = player.position.y + 0.25;
+		
+				camera.rotation = player.rotation;
+				camera.rotation.x += Math.PI;
+				camera.position.y += 0.25;
+
+				player.position.x = replayfile.replayNodes[score].px;
+				player.position.y = replayfile.replayNodes[score].py;
+				player.position.z = replayfile.replayNodes[score].pz;
+				rotation = replayfile.replayNodes[score].r;
 			}
 		} else {
 			// steer
