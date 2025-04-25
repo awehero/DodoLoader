@@ -88,13 +88,12 @@ var update = {
 				document.getElementById("watchreplay").checked = false;
 				window.change_state.die("No TAS file loaded!");
 			} else {
-				camera.position.x = player.position.x;
-				camera.position.z = player.position.z;
-				camera.position.y = player.position.y + 0.25;
-		
-				camera.rotation = player.rotation;
-				camera.rotation.x += Math.PI;
-				camera.position.y += 0.25;
+				let rotation_offsetted = rotation + cameraRightAngle;
+			    	camera.position.x = player.position.x + Math.sin(rotation_offsetted) * cam_horizontal;
+		    		camera.position.z = player.position.z + Math.cos(rotation_offsetted) * cam_horizontal;
+			    	camera.position.y = player.position.y + cam_vertical;
+			    	camera.rotation.y = 3.14 + rotation_offsetted;
+			    	camera.rotation.x = cam_depression;
 
 				player.position.x = replayfile.replayNodes[score].px;
 				player.position.y = replayfile.replayNodes[score].py;
