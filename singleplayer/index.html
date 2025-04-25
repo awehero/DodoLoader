@@ -140,6 +140,16 @@
                     <label>Watch Replay</label>
                     <br>
                     <button id="replayfile" class="modbutton" onclick="changeReplayFile()">Load TAS file</button>
+                  <script> 
+                      function changeReplayFile() {
+                          globalThis.replayfile = prompt("Paste your TAS replay file!");
+                          let ask = prompt("Do you want to override your current replay file? (y/n)");
+                          if (ask == "y" || ask == "Y") {
+                              localStorage.setItem("replayfile", globalThis.replayfile);
+                          }
+                      }
+                  </script>
+
                     <br>
                     <input id="tas2" type="checkbox" >
                     <label >Freeze Dodo</label>
@@ -299,13 +309,6 @@
     <script type="text/javascript" src="https://awehero.github.io/DodoLoader/scripts/decorations.js?v=0.179"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-                        function changeReplayFile() {
-                            globalThis.replayfile = prompt("Paste your TAS replay file!");
-                            let ask = prompt("Do you want to override your current replay file? (y/n)");
-                            if (ask == "y" || ask == "Y") {
-                                localStorage.setItem("replayfile", replayfile);
-                            }
-                        }
                         function isMobile() {
                   				var userAgent = navigator.userAgent || navigator.vendor || window.opera;
                   				return /android|iPad|iPhone|iPod/i.test(userAgent);
