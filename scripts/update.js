@@ -81,66 +81,75 @@ var update = {
 		}
 	},
 	player_move: function() {
-		// steer
-		if ((controls.space) && (score > 10)) {
-			flyjump.jump();
+		let replay = document.getElementById("watchreplay");
+		if (replay.checked == true) {
+			if (!replayfile) {
+				alert("You do not have a TAS file loaded!");
+				document.getElementById("watchreplay").checked = false;
+				window.change_state.die("No TAS file loaded!");
+			}
+		} else {
+			// steer
+			if ((controls.space) && (score > 10)) {
+				flyjump.jump();
+			}
+			if (!this.shouldSpin()) {
+				player.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,0,0));
+				player.rotationQuaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0,0,0),0);
+			}
+			const rotationAdjustment = window.tsTriggers.getRotationAdjustment()
+			rotation += rotationAdjustment
+			player.rotation.y = rotation;
+	
+	        let freeze = document.getElementById("freeze");
+	        if (window.platformermode) {}
+	        else if (freeze.checked == false) {
+	            const positionAdjustment = window.tsTriggers.getPositionAdjustment()
+	            player.position.x += positionAdjustment.x;
+	            player.position.z += positionAdjustment.z;
+	        }
+			// light & camera
+	        let freecam = document.getElementById("freecam");
+	        let follow = document.getElementById("follow"); // these 2 are just the checkboxes, you can change the toggle
+	        let fpv = document.getElementById("fpv");
+	        if (fpv.checked) {
+	            camera.position.x = player.position.x;
+	            camera.position.z = player.position.z;
+	            camera.position.y = player.position.y + 0.25;
+	
+	            camera.rotation = player.rotation;
+	            camera.rotation.x += Math.PI;
+	            camera.position.y += 0.25;
+	        }
+	        else if (!freecam.checked) { // your code, normal camera movement if it's turned off, so if it's triggered it "unhooks" the camera from the player
+	            let rotation_offsetted = rotation + cameraRightAngle;
+	            camera.position.x = player.position.x + Math.sin(rotation_offsetted) * cam_horizontal;
+	            camera.position.z = player.position.z + Math.cos(rotation_offsetted) * cam_horizontal;
+	            camera.position.y = player.position.y + cam_vertical;
+	            camera.rotation.y = 3.14 + rotation_offsetted;
+	            camera.rotation.x = cam_depression;
+	        }
+	        else if (follow.checked) { // follow player script, only works if the camera is "unhooked"
+	            const lerp = (start, end, t) => start * (1 - t) + end * t;
+	            const targetY = player.position.y + window.followHeight;
+	            const baseSmoothingFactor = 0.05; // a smoothing function to practically remove jitter
+	
+	            camera.setTarget(player.position); // look at player
+	
+	            const distanceX = Math.abs(player.position.x - camera.position.x);
+	            const distanceZ = Math.abs(player.position.z - camera.position.z);
+	
+	            // Adjust smoothing factor based on distance
+	            const smoothingFactorX = baseSmoothingFactor * Math.min(distanceX / window.followDistance, 1);
+	            const smoothingFactorZ = baseSmoothingFactor * Math.min(distanceZ / window.followDistance, 1);
+	
+	            // apply smoothing
+	            camera.position.x = lerp(camera.position.x, player.position.x, smoothingFactorX);
+	            camera.position.z = lerp(camera.position.z, player.position.z, smoothingFactorZ);
+	            camera.position.y = lerp(camera.position.y, targetY, baseSmoothingFactor);
+	        }
+			light.position = camera.position;
 		}
-		if (!this.shouldSpin()) {
-			player.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0,0,0));
-			player.rotationQuaternion = BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0,0,0),0);
-		}
-		const rotationAdjustment = window.tsTriggers.getRotationAdjustment()
-		rotation += rotationAdjustment
-		player.rotation.y = rotation;
-
-        let freeze = document.getElementById("freeze");
-        if (window.platformermode) {}
-        else if (freeze.checked == false) {
-            const positionAdjustment = window.tsTriggers.getPositionAdjustment()
-            player.position.x += positionAdjustment.x;
-            player.position.z += positionAdjustment.z;
-        }
-		// light & camera
-        let freecam = document.getElementById("freecam");
-        let follow = document.getElementById("follow"); // these 2 are just the checkboxes, you can change the toggle
-        let fpv = document.getElementById("fpv");
-        if (fpv.checked) {
-            camera.position.x = player.position.x;
-            camera.position.z = player.position.z;
-            camera.position.y = player.position.y + 0.25;
-
-            camera.rotation = player.rotation;
-            camera.rotation.x += Math.PI;
-            camera.position.y += 0.25;
-        }
-        else if (!freecam.checked) { // your code, normal camera movement if it's turned off, so if it's triggered it "unhooks" the camera from the player
-            let rotation_offsetted = rotation + cameraRightAngle;
-            camera.position.x = player.position.x + Math.sin(rotation_offsetted) * cam_horizontal;
-            camera.position.z = player.position.z + Math.cos(rotation_offsetted) * cam_horizontal;
-            camera.position.y = player.position.y + cam_vertical;
-            camera.rotation.y = 3.14 + rotation_offsetted;
-            camera.rotation.x = cam_depression;
-        }
-        else if (follow.checked) { // follow player script, only works if the camera is "unhooked"
-            const lerp = (start, end, t) => start * (1 - t) + end * t;
-            const targetY = player.position.y + window.followHeight;
-            const baseSmoothingFactor = 0.05; // a smoothing function to practically remove jitter
-
-            camera.setTarget(player.position); // look at player
-
-            const distanceX = Math.abs(player.position.x - camera.position.x);
-            const distanceZ = Math.abs(player.position.z - camera.position.z);
-
-            // Adjust smoothing factor based on distance
-            const smoothingFactorX = baseSmoothingFactor * Math.min(distanceX / window.followDistance, 1);
-            const smoothingFactorZ = baseSmoothingFactor * Math.min(distanceZ / window.followDistance, 1);
-
-            // apply smoothing
-            camera.position.x = lerp(camera.position.x, player.position.x, smoothingFactorX);
-            camera.position.z = lerp(camera.position.z, player.position.z, smoothingFactorZ);
-            camera.position.y = lerp(camera.position.y, targetY, baseSmoothingFactor);
-        }
-		light.position = camera.position;
 	},
 	shouldSpin: function() {
         let spinCheckbox = document.getElementById("spin");
