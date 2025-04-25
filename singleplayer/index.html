@@ -139,14 +139,15 @@
                     <input id="watchreplay" type="checkbox">
                     <label>Watch Replay</label>
                     <br>
-                    <button id="replayfile" class="modbutton" onclick="changeReplayFile()">Load TAS file</button>
+                    <button id="replayfile" class="modbutton" onclick="loadReplayfile()">Load TAS file</button>
                   <script> 
-                      function changeReplayFile() {
+                      function loadReplayfile() {
                           globalThis.replayfile = prompt("Paste your TAS replay file!");
                           let ask = prompt("Do you want to override your current replay file? (y/n)");
                           if (ask == "y" || ask == "Y") {
                               localStorage.setItem("replayfile", globalThis.replayfile);
                           }
+                          replayfile = JSON.parse(replayfile);
                       }
                   </script>
 
