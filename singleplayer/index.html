@@ -139,6 +139,8 @@
                     <input id="watchreplay" type="checkbox">
                     <label>Watch Replay</label>
                     <br>
+                    <button id="replayfile" class="modbutton" onclick="changeReplayFile()">Load TAS file</button>
+                    <br>
                     <input id="tas2" type="checkbox" >
                     <label >Freeze Dodo</label>
                     <br >
@@ -294,10 +296,16 @@
       	<button id="MobileDrift" style="position:absolute;right:10px;bottom:calc(20px + 10vh * 2);width:13vw;height:10vw;background:rgba(75, 227, 75, .25);border:none;cursor:pointer;">
       		      <img src="../assets/svgs/driftMobile.svg" style="width:90%;height: 90%;">
       	</button>
-    
     <script type="text/javascript" src="https://awehero.github.io/DodoLoader/scripts/decorations.js?v=0.179"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+                        function changeReplayFile() {
+                            globalThis.replayfile = prompt("Paste your TAS replay file!");
+                            let ask = prompt("Do you want to override your current replay file? (y/n)");
+                            if (ask == "y" || ask == "Y") {
+                                localStorage.setItem("replayfile", replayfile);
+                            }
+                        }
                         function isMobile() {
                   				var userAgent = navigator.userAgent || navigator.vendor || window.opera;
                   				return /android|iPad|iPhone|iPod/i.test(userAgent);
