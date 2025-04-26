@@ -22,6 +22,7 @@ var update = {
 	},
 	loopWhilePlaying() {
         if (!window.ispreview) {
+		
             try {
                 score += 1;
                 window.tsTriggers.onFrame()
